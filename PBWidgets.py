@@ -6,22 +6,22 @@ import trialDesign
 
 # TODO - These widgets could inherit from a common PBWidget parent that implements remove_from_parent etc.
 class SimpleValveWidget(QtWidgets.QWidget, simpleValveDesign.Ui_Form):
-    def __init__(self, parent=None):
+    def __init__(self, parentUi=None):
         super(self.__class__, self).__init__()
         self.setupUi(self)
 
-        self.parent = parent
+        self.parentUi = parentUi
 
         self.removeButton.clicked.connect(self.remove_from_parent)
 
     def remove_from_parent(self):
-        self.parent.layout().removeWidget(self)
+        self.parentUi.layout().removeWidget(self)
         self.deleteLater()
 
     def get_parameters(self):
         params = dict()
 
-        params['type'] = 'simple'
+        params['type'] = 'Simple'
 
         params['fromValues'] = bool(self.fromValuesRadio.isChecked())
         params['fromDuty'] = bool(self.fromDutyRadio.isChecked())
@@ -43,24 +43,44 @@ class SimpleValveWidget(QtWidgets.QWidget, simpleValveDesign.Ui_Form):
 
         return params
 
+    def set_parameters(self, params):
+
+        self.fromValuesRadio.setChecked(params['fromValues'])
+        self.fromDutyRadio.setChecked(params['fromDuty'])
+        self.cleanRadio.setChecked(params['isClean'])
+        self.shatterRadio.setChecked(params['isShatter'])
+        self.repeatsRadio.setChecked(params['fromRepeats'])
+        self.lengthRadio.setChecked(params['fromLength'])
+
+        self.onsetEdit.setText(str(params['onset']))
+        self.offsetEdit.setText(str(params['offset']))
+        self.pulseWidthEdit.setText(str(params['pulse_width']))
+        self.pulseDelayEdit.setText(str(params['pulse_delay']))
+        self.frequencyEdit.setText(str(params['frequency']))
+        self.pulseDutyEdit.setText(str(params['duty']))
+        self.shatterHzEdit.setText(str(params['shatter_frequency']))
+        self.shatterDutyEdit.setText(str(params['shatter_duty']))
+        self.repeatsEdit.setText(str(params['repeats']))
+        self.lengthEdit.setText(str(params['length']))
+
 
 class NoiseValveWidget(QtWidgets.QWidget, noiseValveDesign.Ui_Form):
-    def __init__(self, parent=None):
+    def __init__(self, parentUi=None):
         super(self.__class__, self).__init__()
         self.setupUi(self)
 
-        self.parent = parent
+        self.parentUi = parentUi
 
         self.removeButton.clicked.connect(self.remove_from_parent)
 
     def remove_from_parent(self):
-        self.parent.layout().removeWidget(self)
+        self.parentUi.layout().removeWidget(self)
         self.deleteLater()
 
     def get_parameters(self):
         params = dict()
 
-        params['type'] = 'simple'
+        params['type'] = 'Noise'
 
         params['fromRepeats'] = bool(self.repeatsRadio.isChecked())
         params['fromLength'] = bool(self.lengthRadio.isChecked())
@@ -75,6 +95,19 @@ class NoiseValveWidget(QtWidgets.QWidget, noiseValveDesign.Ui_Form):
         params['length'] = float(self.lengthEdit.text())
 
         return params
+
+    def set_parameters(self, params):
+        self.repeatsRadio.setChecked(params['fromRepeats'])
+        self.lengthRadio.setChecked(params['fromLength'])
+
+        self.onsetEdit.setText(str(params['onset']))
+        self.offsetEdit.setText(str(params['offset']))
+        self.frequencyEdit.setText(str(params['frequency']))
+        self.seedEdit.setText(str(params['seed']))
+        self.ampMinEdit.setText(str(params['amp_min']))
+        self.ampMaxEdit.setText(str(params['amp_max']))
+        self.repeatsEdit.setText(str(params['repeats']))
+        self.lengthEdit.setText(str(params['length']))
 
 
 class TrialWidget(QtWidgets.QWidget, trialDesign.Ui_Form):
