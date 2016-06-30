@@ -35,9 +35,9 @@ class SimpleValveWidget(QtWidgets.QWidget, simpleValveDesign.Ui_Form):
         params['pulse_width'] = float(self.pulseWidthEdit.text())
         params['pulse_delay'] = float(self.pulseDelayEdit.text())
         params['frequency'] = float(self.frequencyEdit.text())
-        params['duty'] = float(self.pulseDutyEdit.text()) * 0.01
+        params['duty'] = float(self.pulseDutyEdit.text())
         params['shatter_frequency'] = float(self.shatterHzEdit.text())
-        params['shatter_duty'] = float(self.shatterDutyEdit.text()) * 0.01
+        params['shatter_duty'] = float(self.shatterDutyEdit.text())
         params['repeats'] = int(self.repeatsEdit.text())
         params['length'] = float(self.lengthEdit.text())
 
@@ -88,11 +88,12 @@ class NoiseValveWidget(QtWidgets.QWidget, noiseValveDesign.Ui_Form):
         params['onset'] = float(self.onsetEdit.text())
         params['offset'] = float(self.offsetEdit.text())
         params['frequency'] = float(self.frequencyEdit.text())
-        params['seed'] = float(self.seedEdit.text())
-        params['amp_min'] = float(self.ampMinEdit.text()) * 0.01
-        params['amp_max'] = float(self.ampMaxEdit.text()) * 0.01
+        params['seed'] = int(self.seedEdit.text())
+        params['amp_min'] = float(self.ampMinEdit.text())
+        params['amp_max'] = float(self.ampMaxEdit.text())
         params['repeats'] = int(self.repeatsEdit.text())
         params['length'] = float(self.lengthEdit.text())
+        params['shatter_frequency'] = float(self.shatterHzEdit.text())
 
         return params
 

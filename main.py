@@ -4,7 +4,7 @@ import mainDesign
 import PBWidgets
 import Models.Experiment as Experiment
 import numpy as np
-import PulseGeneration
+import PulseInterface
 
 
 # noinspection PyBroadException
@@ -78,9 +78,9 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
         trial_params = self.trialBankModel.arraydata[selected_trial][1]
 
-        pulses, t = PulseGeneration.multi_simple_pulse(float(self.sampRateEdit.text()),
-                                                       float(self.globalOnsetEdit.text()),
-                                                       float(self.globalOffsetEdit.text()), trial_params)
+        pulses, t = PulseInterface.make_pulse(float(self.sampRateEdit.text()),
+                                              float(self.globalOnsetEdit.text()),
+                                              float(self.globalOffsetEdit.text()), trial_params)
 
         self.graphicsView.plotItem.clear()
         for p, pulse in enumerate(pulses):
