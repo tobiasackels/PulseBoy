@@ -5,6 +5,7 @@ import PBWidgets
 import Models.Experiment as Experiment
 import numpy as np
 import PulseInterface
+import QueueControl
 
 
 # noinspection PyBroadException
@@ -16,6 +17,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         # Setup Experiment Data
         self.trialBankModel = Experiment.ExperimentModel(self)
         self.trialBankTable.setModel(self.trialBankModel)
+        self.queue_controller = QueueControl.QueueController(self.trialBankModel.arraydata)
 
         # Setup Button Bindings
         self.addValveButton.clicked.connect(lambda f: self.add_valve(v_type=self.valveTypeCombo.currentText()))
@@ -28,6 +30,11 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.actionLoad.triggered.connect(self.load)
 
         self.trialBankTable.clicked.connect(self.trial_selected)
+
+        self.startQueueButton.clicked.connect(self.queue_controller.start_queue)
+        self.stopQueueButton.clicked.connect(self.queue_controller.stop_queue)
+        self.pauseQueueButton.clicked.connect(self.queue_controller.pause_queue)
+        # self.runSelectedButton.clicked.connect(self.queue_controller.run_selected)
 
     def add_valve(self, v_type='Simple', params=None):
         if v_type == 'Simple':
