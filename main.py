@@ -29,7 +29,9 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.actionSave.triggered.connect(self.save)
         self.actionLoad.triggered.connect(self.load)
 
-        self.trialBankTable.clicked.connect(self.trial_selected)
+        # self.trialBankTable.clicked.connect(self.trial_selected)
+        self.trialBankTable.selectionModel().selectionChanged.connect(self.trial_selected)
+        self.queue_controller.thread.start_trigger.connect(self.select_current_trial)
 
         self.startQueueButton.clicked.connect(self.queue_controller.start_queue)
         self.stopQueueButton.clicked.connect(self.queue_controller.stop_queue)
@@ -94,6 +96,10 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             self.graphicsView.plotItem.plot(t, np.array(pulse) - (p * 1.1))
 
         self.update_valve_bank(selected_trial)
+
+    def select_current_trial(self):
+        print('select trial')
+        self.trialBankTable.selectRow(self.queue_controller.current_trial)
 
     def update_valve_bank(self, trial_idx):
         for widget in self.valveBankContents.children():

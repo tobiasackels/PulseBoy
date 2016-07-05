@@ -8,23 +8,25 @@ class QueueLoop(QtCore.QThread):
 
         self.queue_controller = queue_controller
 
-    trigger = QtCore.pyqtSignal()
+    finish_trigger = QtCore.pyqtSignal()
+    start_trigger = QtCore.pyqtSignal()
 
     def run(self):
         while self.queue_controller.should_run:
+            self.start_trigger.emit()
             # do all the trial stuff
             print(self.queue_controller.current_trial, self.queue_controller.trial_list[self.queue_controller.current_trial])
             sleep(1)
 
             # signal end of trial and break to the next thread
-            self.trigger.emit()
+            self.finish_trigger.emit()
             break
 
     def run_selected(self, trial):
         if self.queue_controller.should_run:
             # do all the trial stuff
 
-            self.trigger.emit()
+            self.finish_trigger.emit()
 
 
 class QueueController:
@@ -33,7 +35,7 @@ class QueueController:
         self.current_trial = 0
         self.should_run = False
         self.thread = QueueLoop(self)
-        self.thread.trigger.connect(self.finish_trial)
+        self.thread.finish_trigger.connect(self.finish_trial)
 
     def start_queue(self):
         if not self.should_run:
