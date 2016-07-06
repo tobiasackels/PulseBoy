@@ -17,7 +17,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         # Setup Experiment Data
         self.trialBankModel = Experiment.ExperimentModel(self)
         self.trialBankTable.setModel(self.trialBankModel)
-        self.queue_controller = QueueControl.QueueController(self.trialBankModel.arraydata)
+        self.queue_controller = QueueControl.QueueController(self.trialBankModel.arraydata, self.get_global_params, self.get_hardware_params)
 
         # Setup Button Bindings
         self.addValveButton.clicked.connect(lambda f: self.add_valve(v_type=self.valveTypeCombo.currentText()))
@@ -84,21 +84,23 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.trialBankModel.remove_row(selected_trial)
 
     def trial_selected(self):
-        selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
-        trial_params = self.trialBankModel.arraydata[selected_trial][1]
+        try:
+            selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
+            trial_params = self.trialBankModel.arraydata[selected_trial][1]
 
-        pulses, t = PulseInterface.make_pulse(float(self.sampRateEdit.text()),
-                                              float(self.globalOnsetEdit.text()),
-                                              float(self.globalOffsetEdit.text()), trial_params)
+            pulses, t = PulseInterface.make_pulse(float(self.sampRateEdit.text()),
+                                                  float(self.globalOnsetEdit.text()),
+                                                  float(self.globalOffsetEdit.text()), trial_params)
 
-        self.graphicsView.plotItem.clear()
-        for p, pulse in enumerate(pulses):
-            self.graphicsView.plotItem.plot(t, np.array(pulse) - (p * 1.1))
+            self.graphicsView.plotItem.clear()
+            for p, pulse in enumerate(pulses):
+                self.graphicsView.plotItem.plot(t, np.array(pulse) - (p * 1.1))
 
-        self.update_valve_bank(selected_trial)
+            self.update_valve_bank(selected_trial)
+        except:
+            pass
 
     def select_current_trial(self):
-        print('select trial')
         self.trialBankTable.selectRow(self.queue_controller.current_trial)
 
     def update_valve_bank(self, trial_idx):
@@ -119,6 +121,24 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", '', '*.trialbank')
         print(fname)
         self.trialBankModel.load_arraydata(fname)
+
+    def get_hardware_params(self):
+        params = dict()
+        params['analog_dev'] = self.analogInDevEdit.text()
+        params['analog_channels'] = int(self.analogChannelsEdit.text())
+        params['digital_dev'] = self.digitalOutDevEdit.text()
+        params['digital_channels'] = int(self.digitalChannelsEdit.text())
+        params['sync_clock'] = self.syncClockEdit.text()
+        params['samp_rate'] = float(self.sampRateEdit.text())
+
+        return params
+
+    def get_global_params(self):
+        params = dict()
+        params['global_onset'] = float(self.globalOnsetEdit.text())
+        params['global_offset'] = float(self.globalOffsetEdit.text())
+
+        return params
 
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook

@@ -122,7 +122,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="hardwareTab">
        <attribute name="title">
@@ -136,7 +136,7 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="label_9">
           <property name="text">
            <string>Trigger In Source</string>
@@ -192,21 +192,21 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
            <string>Sampling Rate</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="7" column="0">
          <widget class="QLineEdit" name="sampRateEdit">
           <property name="text">
            <string>20000</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="8" column="0">
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -219,10 +219,38 @@
           </property>
          </spacer>
         </item>
-        <item row="8" column="0">
+        <item row="10" column="1">
+         <widget class="QCheckBox" name="useTriggerCheckbox">
+          <property name="text">
+           <string>Start Trials on Trigger</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Synchronisation Clock</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>(Not Implemented)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
          <widget class="QLineEdit" name="triggerInEdit">
           <property name="text">
            <string>cDAQ1Mod2/ai3</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLineEdit" name="syncClockEdit">
+          <property name="text">
+           <string>/cDAQ1/ai/SampleClock</string>
           </property>
          </widget>
         </item>
@@ -243,7 +271,7 @@
         <item row="1" column="0">
          <widget class="QLineEdit" name="globalOnsetEdit">
           <property name="text">
-           <string>0.5</string>
+           <string>0</string>
           </property>
          </widget>
         </item>
@@ -257,7 +285,7 @@
         <item row="1" column="1">
          <widget class="QLineEdit" name="globalOffsetEdit">
           <property name="text">
-           <string>0.5</string>
+           <string>0</string>
           </property>
          </widget>
         </item>

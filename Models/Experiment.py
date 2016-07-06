@@ -54,15 +54,21 @@ class ExperimentModel(QtCore.QAbstractTableModel):
         self.layoutChanged.emit()
 
     def load_arraydata(self, file_conf):
-        with open(file_conf, 'rb') as fn:
-            arraydata = pickle.load(fn)
+        try:
+            with open(file_conf, 'rb') as fn:
+                arraydata = pickle.load(fn)
 
-        self.arraydata = arraydata
-        self.layoutChanged.emit()
+            self.arraydata = arraydata
+            self.layoutChanged.emit()
+        except:
+            pass
 
     def save_arraydata(self, file_conf):
-        with open(file_conf[0] + file_conf[1], 'wb') as fn:
-            pickle.dump(self.arraydata, fn)
+        try:
+            with open(file_conf[0] + file_conf[1], 'wb') as fn:
+                pickle.dump(self.arraydata, fn)
+        except:
+            pass
 
 
 

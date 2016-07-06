@@ -1,5 +1,7 @@
 from PyQt5 import QtCore
 from time import sleep
+import daqface.DAQ as daq
+import PulseInterface
 
 
 class QueueLoop(QtCore.QThread):
@@ -15,8 +17,19 @@ class QueueLoop(QtCore.QThread):
         while self.queue_controller.should_run:
             self.start_trigger.emit()
             # do all the trial stuff
-            print(self.queue_controller.current_trial, self.queue_controller.trial_list[self.queue_controller.current_trial])
-            sleep(1)
+            trial_params = self.queue_controller.trial_list[self.queue_controller.current_trial][1]
+            hardware_params = self.queue_controller.get_hardware_params()
+            global_params = self.queue_controller.get_global_params()
+
+            pulses, t = PulseInterface.make_pulse(hardware_params['samp_rate'],
+                                                  global_params['global_onset'],
+                                                  global_params['global_offset'],
+                                                  trial_params)
+
+            trial_daq = daq.DoAiMultiTask(hardware_params['analog_dev'], hardware_params['analog_channels'],
+                              hardware_params['digital_dev'], hardware_params['samp_rate'],
+                              len(t) / hardware_params['samp_rate'], pulses, hardware_params['sync_clock'])
+            analog_data = trial_daq.DoTask()
 
             # signal end of trial and break to the next thread
             self.finish_trigger.emit()
@@ -30,12 +43,16 @@ class QueueLoop(QtCore.QThread):
 
 
 class QueueController:
-    def __init__(self, trial_list):
+    def __init__(self, trial_list, get_global_params, get_hardware_params):
         self.trial_list = trial_list
         self.current_trial = 0
         self.should_run = False
         self.thread = QueueLoop(self)
         self.thread.finish_trigger.connect(self.finish_trial)
+
+        # getter functions for global parameters
+        self.get_global_params = get_global_params
+        self.get_hardware_params = get_hardware_params
 
     def start_queue(self):
         if not self.should_run:
