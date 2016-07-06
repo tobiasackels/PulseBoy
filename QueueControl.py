@@ -18,7 +18,7 @@ class QueueLoop(QtCore.QThread):
             self.start_trigger.emit()
 
             # do all the trial stuff
-            self.do_trial()
+            self.do_trial(self.queue_controller.current_trial)
 
             # signal end of trial and break to the next thread
             self.finish_trigger.emit()
@@ -29,11 +29,11 @@ class QueueLoop(QtCore.QThread):
             self.start_trigger.emit()
 
             # do all the trial stuff
-            self.do_trial()
+            self.do_trial(trial)
 
             self.finish_trigger.emit()
 
-    def do_trial(self):
+    def do_trial(self, trial):
         trial_params = self.queue_controller.trial_list[self.queue_controller.current_trial][1]
         hardware_params = self.queue_controller.get_hardware_params()
         global_params = self.queue_controller.get_global_params()
