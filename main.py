@@ -36,7 +36,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.startQueueButton.clicked.connect(self.queue_controller.start_queue)
         self.stopQueueButton.clicked.connect(self.queue_controller.stop_queue)
         self.pauseQueueButton.clicked.connect(self.queue_controller.pause_queue)
-        # self.runSelectedButton.clicked.connect(self.queue_controller.run_selected)
+        self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
 
     def add_valve(self, v_type='Simple', params=None):
         if v_type == 'Simple':

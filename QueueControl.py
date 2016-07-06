@@ -16,20 +16,9 @@ class QueueLoop(QtCore.QThread):
     def run(self):
         while self.queue_controller.should_run:
             self.start_trigger.emit()
+
             # do all the trial stuff
-            trial_params = self.queue_controller.trial_list[self.queue_controller.current_trial][1]
-            hardware_params = self.queue_controller.get_hardware_params()
-            global_params = self.queue_controller.get_global_params()
-
-            pulses, t = PulseInterface.make_pulse(hardware_params['samp_rate'],
-                                                  global_params['global_onset'],
-                                                  global_params['global_offset'],
-                                                  trial_params)
-
-            trial_daq = daq.DoAiMultiTask(hardware_params['analog_dev'], hardware_params['analog_channels'],
-                              hardware_params['digital_dev'], hardware_params['samp_rate'],
-                              len(t) / hardware_params['samp_rate'], pulses, hardware_params['sync_clock'])
-            analog_data = trial_daq.DoTask()
+            self.do_trial()
 
             # signal end of trial and break to the next thread
             self.finish_trigger.emit()
@@ -37,9 +26,28 @@ class QueueLoop(QtCore.QThread):
 
     def run_selected(self, trial):
         if self.queue_controller.should_run:
+            self.start_trigger.emit()
+
             # do all the trial stuff
+            self.do_trial()
 
             self.finish_trigger.emit()
+
+    def do_trial(self):
+        trial_params = self.queue_controller.trial_list[self.queue_controller.current_trial][1]
+        hardware_params = self.queue_controller.get_hardware_params()
+        global_params = self.queue_controller.get_global_params()
+
+        pulses, t = PulseInterface.make_pulse(hardware_params['samp_rate'],
+                                              global_params['global_onset'],
+                                              global_params['global_offset'],
+                                              trial_params)
+
+        trial_daq = daq.DoAiMultiTask(hardware_params['analog_dev'], hardware_params['analog_channels'],
+                                      hardware_params['digital_dev'], hardware_params['samp_rate'],
+                                      len(t) / hardware_params['samp_rate'], pulses, hardware_params['sync_clock'])
+
+        analog_data = trial_daq.DoTask()
 
 
 class QueueController:
@@ -74,6 +82,7 @@ class QueueController:
             self.should_run = True
             self.thread.run_selected(trial)
             self.should_run = False
+            self.current_trial = 0
 
     def finish_trial(self):
         # stuff that happens when a trial finished
