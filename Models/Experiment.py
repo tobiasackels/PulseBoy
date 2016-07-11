@@ -5,8 +5,8 @@ import pickle as pickle
 class ExperimentModel(QtCore.QAbstractTableModel):
     def __init__(self, parent=None, *args):
         QtCore.QAbstractTableModel.__init__(self, parent, *args)
-        self.headerdata = ['Active Valves', 'Parameters']
-        self.arraydata = [[0, []]]
+        self.headerdata = ['Active Valves', 'Parameters', 'Trial Name']
+        self.arraydata = [[0, [], '']]
 
     def rowCount(self, parent):
         return len(self.arraydata)
@@ -27,7 +27,7 @@ class ExperimentModel(QtCore.QAbstractTableModel):
         return QtCore.QVariant()
 
     def append_row(self, row):
-        if self.arraydata[0] == [0, []]:
+        if self.arraydata[0] == [0, [], '']:
             self.arraydata[0] = row
         else:
             self.arraydata.append(row)
@@ -39,7 +39,7 @@ class ExperimentModel(QtCore.QAbstractTableModel):
 
     def remove_row(self, row_i):
         if len(self.arraydata) < 2:
-            self.arraydata = [[0, []]]
+            self.arraydata = [[0, [], '']]
         else:
             self.arraydata.pop(row_i)
         self.layoutChanged.emit()

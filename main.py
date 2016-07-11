@@ -54,6 +54,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
     def add_trial(self):
         n_valves = 0
         all_params = list()
+        trial_name = self.trialNameEdit.text()
         for valve in self.valveBankContents.children():
             try:
                 params = valve.get_parameters()
@@ -63,7 +64,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
                 pass
 
         if n_valves > 0:
-            self.trialBankModel.append_row([n_valves, all_params])
+            self.trialBankModel.append_row([n_valves, all_params, trial_name])
 
     def update_trial(self):
         selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
