@@ -80,10 +80,10 @@ class QueueController:
 
     def run_selected(self, trial):
         if not self.should_run:
+            self.current_trial = trial
             self.should_run = True
             self.thread.run_selected(trial)
             self.should_run = False
-            self.current_trial = 0
 
     def finish_trial(self):
         # stuff that happens when a trial finished
