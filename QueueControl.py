@@ -2,6 +2,7 @@ from PyQt5 import QtCore
 from time import sleep
 import daqface.DAQ as daq
 import PulseInterface
+import matplotlib.pyplot as plt
 
 
 class QueueLoop(QtCore.QThread):

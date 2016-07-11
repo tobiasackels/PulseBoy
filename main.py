@@ -17,7 +17,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         # Setup Experiment Data
         self.trialBankModel = Experiment.ExperimentModel(self)
         self.trialBankTable.setModel(self.trialBankModel)
-        self.queue_controller = QueueControl.QueueController(self.trialBankModel.arraydata, self.get_global_params, self.get_hardware_params)
+        self.queue_controller = QueueControl.QueueController(self.trialBankModel.arraydata, self.get_global_params,
+                                                             self.get_hardware_params)
 
         # Setup Button Bindings
         self.addValveButton.clicked.connect(lambda f: self.add_valve(v_type=self.valveTypeCombo.currentText()))
@@ -121,6 +122,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", '', '*.trialbank')
         print(fname)
         self.trialBankModel.load_arraydata(fname)
+        self.queue_controller.trial_list = self.trialBankModel.arraydata
 
     def get_hardware_params(self):
         params = dict()
