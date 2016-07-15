@@ -1,12 +1,14 @@
 from PyQt5 import QtCore, QtGui
 import pickle as pickle
 
+default_row = [[0, [], '']]
+
 
 class ExperimentModel(QtCore.QAbstractTableModel):
     def __init__(self, parent=None, *args):
         QtCore.QAbstractTableModel.__init__(self, parent, *args)
         self.headerdata = ['Active Valves', 'Parameters', 'Trial Name']
-        self.arraydata = [[0, [], '']]
+        self.arraydata = default_row.copy()
 
     def rowCount(self, parent):
         return len(self.arraydata)
@@ -24,10 +26,12 @@ class ExperimentModel(QtCore.QAbstractTableModel):
     def headerData(self, col, orientation, role):
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             return QtCore.QVariant(self.headerdata[col])
+        if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
+            return int(col)
         return QtCore.QVariant()
 
     def append_row(self, row):
-        if self.arraydata[0] == [0, [], '']:
+        if self.arraydata[0] == default_row.copy()[0]:
             self.arraydata[0] = row
         else:
             self.arraydata.append(row)
@@ -39,7 +43,8 @@ class ExperimentModel(QtCore.QAbstractTableModel):
 
     def remove_row(self, row_i):
         if len(self.arraydata) < 2:
-            self.arraydata = [[0, [], '']]
+            print(default_row)
+            self.arraydata = default_row.copy()
         else:
             self.arraydata.pop(row_i)
         self.layoutChanged.emit()
