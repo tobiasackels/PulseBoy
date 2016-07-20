@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'PulseBoyUI.ui'
+# Form implementation generated from reading ui file 'C:\Users\erskina\PycharmProjects\PulseBoy\PulseBoyUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -203,6 +203,12 @@ class Ui_MainWindow(object):
         self.pauseQueueButton = QtWidgets.QPushButton(self.experimentSetupTab)
         self.pauseQueueButton.setObjectName("pauseQueueButton")
         self.gridLayout_4.addWidget(self.pauseQueueButton, 5, 1, 1, 1)
+        self.moveUpButton = QtWidgets.QPushButton(self.experimentSetupTab)
+        self.moveUpButton.setObjectName("moveUpButton")
+        self.gridLayout_4.addWidget(self.moveUpButton, 3, 1, 1, 1)
+        self.moveDownButton = QtWidgets.QPushButton(self.experimentSetupTab)
+        self.moveDownButton.setObjectName("moveDownButton")
+        self.gridLayout_4.addWidget(self.moveDownButton, 3, 2, 1, 1)
         self.setupTabs.addTab(self.experimentSetupTab, "")
         self.gridLayout.addWidget(self.setupTabs, 1, 2, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -224,7 +230,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.setupTabs.setCurrentIndex(0)
+        self.setupTabs.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -266,6 +272,8 @@ class Ui_MainWindow(object):
         self.runSelectedButton.setText(_translate("MainWindow", "Run Selected"))
         self.stopQueueButton.setText(_translate("MainWindow", "Stop Queue"))
         self.pauseQueueButton.setText(_translate("MainWindow", "Pause Queue"))
+        self.moveUpButton.setText(_translate("MainWindow", "Move Up"))
+        self.moveDownButton.setText(_translate("MainWindow", "Move Down"))
         self.setupTabs.setTabText(self.setupTabs.indexOf(self.experimentSetupTab), _translate("MainWindow", "Experiment"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionSave.setText(_translate("MainWindow", "Save"))

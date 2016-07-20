@@ -3,7 +3,6 @@ import pickle as pickle
 
 default_row = [[0, [], '']]
 
-
 class ExperimentModel(QtCore.QAbstractTableModel):
     def __init__(self, parent=None, *args):
         QtCore.QAbstractTableModel.__init__(self, parent, *args)
@@ -21,6 +20,7 @@ class ExperimentModel(QtCore.QAbstractTableModel):
             return QtCore.QVariant()
         elif role != QtCore.Qt.DisplayRole:
             return QtCore.QVariant()
+
         return QtCore.QVariant(str(self.arraydata[index.row()][index.column()]))
 
     def headerData(self, col, orientation, role):
@@ -53,6 +53,22 @@ class ExperimentModel(QtCore.QAbstractTableModel):
         self.arraydata.insert(row_i, row)
         self.layoutChanged.emit()
 
+    def move_trial_up(self, idx):
+        try:
+            if idx > 0:
+                self.arraydata[idx], self.arraydata[idx-1] = self.arraydata[idx-1], self.arraydata[idx]
+        except:
+            pass
+        self.layoutChanged.emit()
+
+    def move_trial_down(self, idx):
+        try:
+            if idx < len(self.arraydata):
+                self.arraydata[idx], self.arraydata[idx + 1] = self.arraydata[idx + 1], self.arraydata[idx]
+        except:
+            pass
+        self.layoutChanged.emit()
+
     def append_valve(self, row, valve_params):
         self.arraydata[row][0] += 1
         self.arraydata[row][1].append(valve_params)
@@ -66,6 +82,7 @@ class ExperimentModel(QtCore.QAbstractTableModel):
             self.arraydata = arraydata
             self.layoutChanged.emit()
         except:
+            print('LOAD FAILED')
             pass
 
     def save_arraydata(self, file_conf):

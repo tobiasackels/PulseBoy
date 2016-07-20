@@ -26,6 +26,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.addTrialButton.clicked.connect(self.add_trial)
         self.updateTrialButton.clicked.connect(self.update_trial)
         self.removeTrialButton.clicked.connect(self.remove_trial)
+        self.moveUpButton.clicked.connect(self.move_trial_up)
+        self.moveDownButton.clicked.connect(self.move_trial_down)
 
         self.actionSave.triggered.connect(self.save)
         self.actionLoad.triggered.connect(self.load)
@@ -70,6 +72,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
         n_valves = 0
         all_params = list()
+        trial_name = self.trialNameEdit.text()
         for valve in self.valveBankContents.children():
             try:
                 params = valve.get_parameters()
@@ -79,11 +82,32 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
                 pass
 
         if n_valves > 0:
-            self.trialBankModel.update_row(selected_trial, [n_valves, all_params])
+            self.trialBankModel.update_row(selected_trial, [n_valves, all_params, trial_name])
 
     def remove_trial(self):
-        selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
-        self.trialBankModel.remove_row(selected_trial)
+        try:
+            selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
+            self.trialBankModel.remove_row(selected_trial)
+        except:
+            pass
+
+    def move_trial_up(self):
+        try:
+            idx = self.trialBankTable.selectionModel().selectedRows()[0].row()
+            self.trialBankModel.move_trial_up(idx)
+            if idx > 0:
+                self.select_trial(idx - 1)
+        except:
+            pass
+
+    def move_trial_down(self):
+        try:
+            idx = self.trialBankTable.selectionModel().selectedRows()[0].row()
+            self.trialBankModel.move_trial_down(idx)
+            if idx < len(self.trialBankModel.arraydata):
+                self.select_trial(idx + 1)
+        except:
+            pass
 
     def trial_selected(self):
         try:
@@ -104,6 +128,9 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
     def select_current_trial(self):
         self.trialBankTable.selectRow(self.queue_controller.current_trial)
+
+    def select_trial(self, trial_n):
+        self.trialBankTable.selectRow(trial_n)
 
     def update_valve_bank(self, trial_idx):
         for widget in self.valveBankContents.children():
