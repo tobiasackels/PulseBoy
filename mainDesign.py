@@ -230,7 +230,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.setupTabs.setCurrentIndex(2)
+        self.setupTabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -238,11 +238,11 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Valve Bank"))
         self.label_8.setText(_translate("MainWindow", "Trial Bank"))
-        self.digitalChannelsEdit.setText(_translate("MainWindow", "2"))
+        self.digitalChannelsEdit.setText(_translate("MainWindow", "4"))
         self.label_9.setText(_translate("MainWindow", "Trigger In Source"))
         self.label_2.setText(_translate("MainWindow", "Digital Out Device"))
         self.label_4.setText(_translate("MainWindow", "Digital Channels"))
-        self.digitalOutDevEdit.setText(_translate("MainWindow", "cDAQ1Mod1/port0/line0:1"))
+        self.digitalOutDevEdit.setText(_translate("MainWindow", "cDAQ1Mod1/port0/line0:3"))
         self.label_3.setText(_translate("MainWindow", "Analog Input Device"))
         self.analogChannelsLabel.setText(_translate("MainWindow", "Analog Channels"))
         self.analogInDevEdit.setText(_translate("MainWindow", "cDAQ1Mod2/ai0"))
