@@ -1,11 +1,13 @@
-from PyQt5 import QtWidgets
 import sys
-import mainDesign
-import PBWidgets
-import Models.Experiment as Experiment
-import numpy as np
+
 import PulseInterface
+import numpy as np
+from PyQt5 import QtWidgets
+
+import Models.Experiment as Experiment
 import QueueControl
+from Designs import mainDesign
+from Models import PBWidgets
 
 
 # noinspection PyBroadException
@@ -63,6 +65,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
                 all_params.append(params)
                 n_valves += 1
             except:
+                print('Error in: add_trial')
                 pass
 
         if n_valves > 0:
@@ -79,6 +82,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
                 all_params.append(params)
                 n_valves += 1
             except:
+                print('Error in: update_trial')
                 pass
 
         if n_valves > 0:
@@ -89,6 +93,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
             self.trialBankModel.remove_row(selected_trial)
         except:
+            print('Error in: remove_trial')
             pass
 
     def move_trial_up(self):
@@ -98,6 +103,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             if idx > 0:
                 self.select_trial(idx - 1)
         except:
+            print('Error in: move_trial_up')
             pass
 
     def move_trial_down(self):
@@ -107,6 +113,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             if idx < len(self.trialBankModel.arraydata):
                 self.select_trial(idx + 1)
         except:
+            print('Error in: move_trial_down')
             pass
 
     def trial_selected(self):
@@ -124,6 +131,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
             self.update_valve_bank(selected_trial)
         except:
+            print('Error in: trial_selected')
             pass
 
     def select_current_trial(self):
@@ -137,6 +145,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             try:
                 widget.remove_from_parent()
             except:
+                print('Error in: update_valve_bank')
                 pass
 
         for valve in self.trialBankModel.arraydata[trial_idx][1]:

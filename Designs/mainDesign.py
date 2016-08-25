@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\erskina\PycharmProjects\PulseBoy\PulseBoyUI.ui'
+# Form implementation generated from reading ui file 'PulseBoyUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -230,7 +230,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.setupTabs.setCurrentIndex(0)
+        self.setupTabs.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
