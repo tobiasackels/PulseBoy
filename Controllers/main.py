@@ -83,8 +83,12 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             self.trialBankModel.update_row(selected_trial, [n_valves, all_params, trial_name])
 
     def remove_trial(self):
-        selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
-        self.trialBankModel.remove_row(selected_trial)
+        try:
+            selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
+            self.trialBankModel.remove_row(selected_trial)
+        except:
+            print('No trial selected')
+            pass
 
     def move_trial_up(self):
         idx = self.trialBankTable.selectionModel().selectedRows()[0].row()
