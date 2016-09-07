@@ -5,7 +5,7 @@ import numpy as np
 from PyQt5 import QtWidgets
 
 import Models.Experiment as Experiment
-import QueueControl
+from Controllers import QueueControl
 from Designs import mainDesign
 from Models import PBWidgets
 
