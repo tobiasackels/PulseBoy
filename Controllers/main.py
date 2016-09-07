@@ -60,13 +60,10 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         all_params = list()
         trial_name = self.trialNameEdit.text()
         for valve in self.valveBankContents.children():
-            try:
+            if hasattr(valve, 'get_parameters'):
                 params = valve.get_parameters()
                 all_params.append(params)
                 n_valves += 1
-            except:
-                print('Error in: add_trial')
-                pass
 
         if n_valves > 0:
             self.trialBankModel.append_row([n_valves, all_params, trial_name])
@@ -77,44 +74,29 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         all_params = list()
         trial_name = self.trialNameEdit.text()
         for valve in self.valveBankContents.children():
-            try:
+            if hasattr(valve, 'get_parameters'):
                 params = valve.get_parameters()
                 all_params.append(params)
                 n_valves += 1
-            except:
-                print('Error in: update_trial')
-                pass
 
         if n_valves > 0:
             self.trialBankModel.update_row(selected_trial, [n_valves, all_params, trial_name])
 
     def remove_trial(self):
-        try:
-            selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
-            self.trialBankModel.remove_row(selected_trial)
-        except:
-            print('Error in: remove_trial')
-            pass
+        selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
+        self.trialBankModel.remove_row(selected_trial)
 
     def move_trial_up(self):
-        try:
-            idx = self.trialBankTable.selectionModel().selectedRows()[0].row()
-            self.trialBankModel.move_trial_up(idx)
-            if idx > 0:
-                self.select_trial(idx - 1)
-        except:
-            print('Error in: move_trial_up')
-            pass
+        idx = self.trialBankTable.selectionModel().selectedRows()[0].row()
+        self.trialBankModel.move_trial_up(idx)
+        if idx > 0:
+            self.select_trial(idx - 1)
 
     def move_trial_down(self):
-        try:
-            idx = self.trialBankTable.selectionModel().selectedRows()[0].row()
-            self.trialBankModel.move_trial_down(idx)
-            if idx < len(self.trialBankModel.arraydata):
-                self.select_trial(idx + 1)
-        except:
-            print('Error in: move_trial_down')
-            pass
+        idx = self.trialBankTable.selectionModel().selectedRows()[0].row()
+        self.trialBankModel.move_trial_down(idx)
+        if idx < len(self.trialBankModel.arraydata):
+            self.select_trial(idx + 1)
 
     def trial_selected(self):
         try:
@@ -142,11 +124,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
     def update_valve_bank(self, trial_idx):
         for widget in self.valveBankContents.children():
-            try:
+            if hasattr(widget, 'get_parameters'):
                 widget.remove_from_parent()
-            except:
-                print('Error in: update_valve_bank')
-                pass
 
         for valve in self.trialBankModel.arraydata[trial_idx][1]:
             self.add_valve(v_type=valve['type'], params=valve)
