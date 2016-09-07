@@ -74,6 +74,7 @@ class QueueController:
             self.current_trial += 1
 
     def stop_queue(self):
+        self.thread.exit() # not sure if needed
         if self.should_run:
             self.should_run = False
             self.current_trial = 0
@@ -87,6 +88,7 @@ class QueueController:
 
     def finish_trial(self):
         # stuff that happens when a trial finished
+        self.thread.exit() # not sure if needed
         if self.should_run:
             self.current_trial += 1
 
