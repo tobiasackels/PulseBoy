@@ -101,20 +101,20 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
     def trial_selected(self):
         try:
             selected_trial = self.trialBankTable.selectionModel().selectedRows()[0].row()
-            trial_params = self.trialBankModel.arraydata[selected_trial][1]
-
-            pulses, t = PulseInterface.make_pulse(float(self.sampRateEdit.text()),
-                                                  float(self.globalOnsetEdit.text()),
-                                                  float(self.globalOffsetEdit.text()), trial_params)
-
-            self.graphicsView.plotItem.clear()
-            for p, pulse in enumerate(pulses):
-                self.graphicsView.plotItem.plot(t, np.array(pulse) - (p * 1.1))
-
-            self.update_valve_bank(selected_trial)
         except:
-            print('Error in: trial_selected')
-            pass
+            selected_trial = 0
+
+        trial_params = self.trialBankModel.arraydata[selected_trial][1]
+
+        pulses, t = PulseInterface.make_pulse(float(self.sampRateEdit.text()),
+                                              float(self.globalOnsetEdit.text()),
+                                              float(self.globalOffsetEdit.text()), trial_params)
+
+        self.graphicsView.plotItem.clear()
+        for p, pulse in enumerate(pulses):
+            self.graphicsView.plotItem.plot(t, np.array(pulse) - (p * 1.1))
+
+        self.update_valve_bank(selected_trial)
 
     def select_current_trial(self):
         self.trialBankTable.selectRow(self.queue_controller.current_trial)
