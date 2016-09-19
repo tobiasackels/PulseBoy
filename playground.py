@@ -1,48 +1,36 @@
-from PyQt5 import QtGui, QtCore, QtWidgets
-import sys
+from PulseGeneration import *
+import numpy as np
+import matplotlib.pyplot as plt
 
-my_array = [['00','01','02'],
-            ['10','11','12'],
-            ['20','21','22']]
+params1 = {'seed': 1,
+          'frequency': 20.0,
+          'shatter_frequency': 500.0,
+          'fromLength': True,
+          'length': 3,
+          'amp_min': 0.1,
+          'amp_max': 0.9,
+          'onset': 0.1,
+          'offset': 0.2}
 
+params2 = {'seed': 1,
+           'frequency': 20.0,
+           'shatter_frequency': 500.0,
+           'fromLength': True,
+           'length': 3,
+           'amp_min': 0.1,
+           'amp_max': 0.9,
+           'onset': 0.1,
+           'offset': 0.2}
 
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    w = MyWindow()
-    w.show()
-    sys.exit(app.exec_())
+samp_rate = 30000
 
+pulse1, t = noise_pulse(samp_rate, params1)
+pulse2, t = noise_pulse(samp_rate, params2)
 
-class MyWindow(QtWidgets.QWidget):
-    def __init__(self, *args):
-        QtWidgets.QWidget.__init__(self, *args)
+print(np.array_equal(pulse1, pulse2))
 
-        tablemodel = MyTableModel(my_array, self)
-        tableview = QtWidgets.QTableView()
-        tableview.setModel(tablemodel)
-
-        layout = QtWidgets.QVBoxLayout(self)
-        layout.addWidget(tableview)
-        self.setLayout(layout)
-
-
-class MyTableModel(QtCore.QAbstractTableModel):
-    def __init__(self, datain, parent=None, *args):
-        QtCore.QAbstractTableModel.__init__(self, parent, *args)
-        self.arraydata = datain
-
-    def rowCount(self, parent):
-        return len(self.arraydata)
-
-    def columnCount(self, parent):
-        return len(self.arraydata[0])
-
-    def data(self, index, role):
-        if not index.isValid():
-            return QtCore.QVariant()
-        elif role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
-        return QtCore.QVariant(self.arraydata[index.row()][index.column()])
-
-if __name__ == "__main__":
-    main()
+plt.figure()
+plt.hold(True)
+plt.plot(t, pulse1)
+plt.plot(t, -pulse2)
+plt.show()

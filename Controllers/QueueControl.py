@@ -4,6 +4,7 @@ import daqface.DAQ as daq
 import PulseInterface
 import matplotlib.pyplot as plt
 import scipy.io as sio
+import numpy as np
 
 
 class QueueLoop(QtCore.QThread):
@@ -44,12 +45,21 @@ class QueueLoop(QtCore.QThread):
                                               global_params['global_onset'],
                                               global_params['global_offset'],
                                               trial_params)
+        print(np.random.uniform(0.1, 0.9))
+        # DEBUG
+        pulses2, t2 = PulseInterface.make_pulse(hardware_params['samp_rate'],
+                                              global_params['global_onset'],
+                                              global_params['global_offset'],
+                                              trial_params)
+        print(np.random.uniform(0.1, 0.9))
+        print(np.array_equal(pulses[0], pulses2[0]))
+        # DEBUG
 
         trial_daq = daq.DoAiMultiTask(hardware_params['analog_dev'], hardware_params['analog_channels'],
                                       hardware_params['digital_dev'], hardware_params['samp_rate'],
                                       len(t) / hardware_params['samp_rate'], pulses, hardware_params['sync_clock'])
 
-        # sio.savemat('test_pulse' + str(trial) + '.mat', {'pulse': pulses})
+        # sio.savemat('test_pulse' + str(trial) + '.mat', {'pulse' + str(trial): pulses})
 
         analog_data = trial_daq.DoTask()
 
