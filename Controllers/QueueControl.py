@@ -10,6 +10,7 @@ class QueueLoop(QtCore.QThread):
         QtCore.QThread.__init__(self)
 
         self.queue_controller = queue_controller
+        self.analog_data = []
 
     finish_trigger = QtCore.pyqtSignal()
     start_trigger = QtCore.pyqtSignal()
@@ -48,7 +49,7 @@ class QueueLoop(QtCore.QThread):
                                       hardware_params['digital_dev'], hardware_params['samp_rate'],
                                       len(t) / hardware_params['samp_rate'], pulses, hardware_params['sync_clock'])
 
-        analog_data = trial_daq.DoTask()
+        self.analog_data = trial_daq.DoTask()
 
 
 class QueueController:

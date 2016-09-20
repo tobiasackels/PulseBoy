@@ -37,6 +37,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         # self.trialBankTable.clicked.connect(self.trial_selected)
         self.trialBankTable.selectionModel().selectionChanged.connect(self.trial_selected)
         self.queue_controller.thread.start_trigger.connect(self.select_current_trial)
+        self.queue_controller.thread.finish_trigger.connect(self.plot_analog_data)
 
         self.startQueueButton.clicked.connect(self.queue_controller.start_queue)
         self.stopQueueButton.clicked.connect(self.queue_controller.stop_queue)
@@ -129,6 +130,12 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
         for valve in self.trialBankModel.arraydata[trial_idx][1]:
             self.add_valve(v_type=valve['type'], params=valve)
+
+    def plot_analog_data(self):
+        self.analogView.plotItem.clear()
+        for a, analog in enumerate(self.queue_controller.thread.analog_data):
+            t = np.arange(len(analog)) / int(self.sampRateEdit.text())
+            self.analogView.plotItem.plot(t, np.array(analog) - (a * 1.1))
 
     def save(self):
         fname = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", "", ".trialbank")

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'PulseBoyUI.ui'
+# Form implementation generated from reading ui file 'UI/PulseBoyUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -41,14 +41,6 @@ class Ui_MainWindow(object):
         self.valveBankLayout.setObjectName("valveBankLayout")
         self.valveBankScrollArea.setWidget(self.valveBankContents)
         self.gridLayout.addWidget(self.valveBankScrollArea, 1, 0, 1, 1)
-        self.graphicsView = PlotWidget(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.graphicsView.sizePolicy().hasHeightForWidth())
-        self.graphicsView.setSizePolicy(sizePolicy)
-        self.graphicsView.setObjectName("graphicsView")
-        self.gridLayout.addWidget(self.graphicsView, 3, 2, 1, 1)
         self.trialBankTable = QtWidgets.QTableView(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -211,6 +203,35 @@ class Ui_MainWindow(object):
         self.gridLayout_4.addWidget(self.moveDownButton, 3, 2, 1, 1)
         self.setupTabs.addTab(self.experimentSetupTab, "")
         self.gridLayout.addWidget(self.setupTabs, 1, 2, 1, 1)
+        self.viewWidgetTab = QtWidgets.QTabWidget(self.centralwidget)
+        self.viewWidgetTab.setObjectName("viewWidgetTab")
+        self.pulseTab = QtWidgets.QWidget()
+        self.pulseTab.setObjectName("pulseTab")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.pulseTab)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.graphicsView = PlotWidget(self.pulseTab)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.graphicsView.sizePolicy().hasHeightForWidth())
+        self.graphicsView.setSizePolicy(sizePolicy)
+        self.graphicsView.setObjectName("graphicsView")
+        self.gridLayout_5.addWidget(self.graphicsView, 0, 0, 1, 1)
+        self.viewWidgetTab.addTab(self.pulseTab, "")
+        self.analogDataTab = QtWidgets.QWidget()
+        self.analogDataTab.setObjectName("analogDataTab")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.analogDataTab)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.analogView = PlotWidget(self.analogDataTab)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.analogView.sizePolicy().hasHeightForWidth())
+        self.analogView.setSizePolicy(sizePolicy)
+        self.analogView.setObjectName("analogView")
+        self.gridLayout_6.addWidget(self.analogView, 0, 0, 1, 1)
+        self.viewWidgetTab.addTab(self.analogDataTab, "")
+        self.gridLayout.addWidget(self.viewWidgetTab, 3, 2, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1229, 21))
@@ -231,6 +252,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.setupTabs.setCurrentIndex(2)
+        self.viewWidgetTab.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -275,6 +297,8 @@ class Ui_MainWindow(object):
         self.moveUpButton.setText(_translate("MainWindow", "Move Up"))
         self.moveDownButton.setText(_translate("MainWindow", "Move Down"))
         self.setupTabs.setTabText(self.setupTabs.indexOf(self.experimentSetupTab), _translate("MainWindow", "Experiment"))
+        self.viewWidgetTab.setTabText(self.viewWidgetTab.indexOf(self.pulseTab), _translate("MainWindow", "Pulses"))
+        self.viewWidgetTab.setTabText(self.viewWidgetTab.indexOf(self.analogDataTab), _translate("MainWindow", "Analog Data"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
         self.actionLoad.setText(_translate("MainWindow", "Load"))
