@@ -112,7 +112,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="hardwareTab">
        <attribute name="title">
@@ -429,12 +429,54 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="dataExportTab">
+       <attribute name="title">
+        <string>Data</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Export Suffix</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Export Path</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="exportPathEdit">
+          <property name="text">
+           <string>C:/Users/erskina/PycharmProjects/PulseBoy/Data/</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="exportSuffixEdit">
+          <property name="text">
+           <string>data</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="exportPathDirButton">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
     <item row="3" column="2">
      <widget class="QTabWidget" name="viewWidgetTab">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pulseTab">
        <attribute name="title">
