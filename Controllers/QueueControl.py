@@ -4,7 +4,10 @@ import daqface.DAQ as daq
 import PulseInterface
 import matplotlib.pyplot as plt
 import scipy.io as sio
+<<<<<<< HEAD
 import numpy as np
+=======
+>>>>>>> release/with-saving
 
 
 class QueueLoop(QtCore.QThread):
@@ -12,6 +15,7 @@ class QueueLoop(QtCore.QThread):
         QtCore.QThread.__init__(self)
 
         self.queue_controller = queue_controller
+        self.analog_data = []
 
     finish_trigger = QtCore.pyqtSignal()
     start_trigger = QtCore.pyqtSignal()
@@ -40,6 +44,7 @@ class QueueLoop(QtCore.QThread):
         trial_params = self.queue_controller.trial_list[self.queue_controller.current_trial][1]
         hardware_params = self.queue_controller.get_hardware_params()
         global_params = self.queue_controller.get_global_params()
+        export_params = self.queue_controller.get_export_params()
 
         pulses, t = PulseInterface.make_pulse(hardware_params['samp_rate'],
                                               global_params['global_onset'],
@@ -59,13 +64,21 @@ class QueueLoop(QtCore.QThread):
                                       hardware_params['digital_dev'], hardware_params['samp_rate'],
                                       len(t) / hardware_params['samp_rate'], pulses, hardware_params['sync_clock'])
 
+<<<<<<< HEAD
         # sio.savemat('test_pulse' + str(trial) + '.mat', {'pulse' + str(trial): pulses})
 
         analog_data = trial_daq.DoTask()
+=======
+        self.analog_data = trial_daq.DoTask()
+
+#       Save data
+        save_string = export_params['export_path'] + str(trial) + export_params['export_suffix'] + '.mat'
+        sio.savemat(save_string, {'analog_data': self.analog_data, 'pulses': pulses, 't': t})
+>>>>>>> release/with-saving
 
 
 class QueueController:
-    def __init__(self, trial_list, get_global_params, get_hardware_params):
+    def __init__(self, trial_list, get_global_params, get_hardware_params, get_export_params):
         self.trial_list = trial_list
         self.current_trial = 0
         self.should_run = False
@@ -75,6 +88,7 @@ class QueueController:
         # getter functions for global parameters
         self.get_global_params = get_global_params
         self.get_hardware_params = get_hardware_params
+        self.get_export_params = get_export_params
 
     def start_queue(self):
         if not self.should_run:

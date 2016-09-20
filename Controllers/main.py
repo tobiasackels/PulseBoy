@@ -20,7 +20,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.trialBankModel = Experiment.ExperimentModel(self)
         self.trialBankTable.setModel(self.trialBankModel)
         self.queue_controller = QueueControl.QueueController(self.trialBankModel.arraydata, self.get_global_params,
-                                                             self.get_hardware_params)
+                                                             self.get_hardware_params, self.get_export_params)
 
         # Setup Button Bindings
         self.addValveButton.clicked.connect(lambda f: self.add_valve(v_type=self.valveTypeCombo.currentText()))
@@ -33,10 +33,12 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
         self.actionSave.triggered.connect(self.save)
         self.actionLoad.triggered.connect(self.load)
+        self.exportPathDirButton.clicked.connect(self.set_export_path)
 
         # self.trialBankTable.clicked.connect(self.trial_selected)
         self.trialBankTable.selectionModel().selectionChanged.connect(self.trial_selected)
         self.queue_controller.thread.start_trigger.connect(self.select_current_trial)
+        self.queue_controller.thread.finish_trigger.connect(self.plot_analog_data)
 
         self.startQueueButton.clicked.connect(self.queue_controller.start_queue)
         self.stopQueueButton.clicked.connect(self.queue_controller.stop_queue)
@@ -134,6 +136,12 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         for valve in self.trialBankModel.arraydata[trial_idx][1]:
             self.add_valve(v_type=valve['type'], params=valve)
 
+    def plot_analog_data(self):
+        self.analogView.plotItem.clear()
+        for a, analog in enumerate(self.queue_controller.thread.analog_data):
+            t = np.arange(len(analog)) / int(self.sampRateEdit.text())
+            self.analogView.plotItem.plot(t, np.array(analog) - (a * 1.1))
+
     def save(self):
         fname = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", "", ".trialbank")
         self.trialBankModel.save_arraydata(fname)
@@ -161,6 +169,17 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         params['global_offset'] = float(self.globalOffsetEdit.text())
 
         return params
+
+    def get_export_params(self):
+        params = dict()
+        params['export_path'] = str(self.exportPathEdit.text())
+        params['export_suffix'] = str(self.exportSuffixEdit.text())
+
+        return params
+
+    def set_export_path(self):
+        path = QtWidgets.QFileDialog.getExistingDirectory(self, "Choose Export Path")
+        self.exportPathEdit.setText(path + '/')
 
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
