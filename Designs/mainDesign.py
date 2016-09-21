@@ -266,8 +266,11 @@ class Ui_MainWindow(object):
         self.actionSave.setObjectName("actionSave")
         self.actionLoad = QtWidgets.QAction(MainWindow)
         self.actionLoad.setObjectName("actionLoad")
+        self.actionSave_Configuration = QtWidgets.QAction(MainWindow)
+        self.actionSave_Configuration.setObjectName("actionSave_Configuration")
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionLoad)
+        self.menuFile.addAction(self.actionSave_Configuration)
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -328,5 +331,6 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
         self.actionLoad.setText(_translate("MainWindow", "Load"))
+        self.actionSave_Configuration.setText(_translate("MainWindow", "Save Configuration"))
 
 from pyqtgraph import PlotWidget

@@ -8,6 +8,8 @@ import Models.Experiment as Experiment
 from Controllers import QueueControl
 from Designs import mainDesign
 from Models import PBWidgets
+import pickle as pickle
+import os.path
 
 
 # noinspection PyBroadException
@@ -21,6 +23,11 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.trialBankTable.setModel(self.trialBankModel)
         self.queue_controller = QueueControl.QueueController(self.trialBankModel.arraydata, self.get_global_params,
                                                              self.get_hardware_params, self.get_export_params)
+        if os.path.exists('params.config'):
+            try:
+                self.load_config_data()
+            except:
+                pass
 
         # Setup Button Bindings
         self.addValveButton.clicked.connect(lambda f: self.add_valve(v_type=self.valveTypeCombo.currentText()))
@@ -33,6 +40,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
         self.actionSave.triggered.connect(self.save)
         self.actionLoad.triggered.connect(self.load)
+        self.actionSave_Configuration.triggered.connect(self.save_config_data)
         self.exportPathDirButton.clicked.connect(self.set_export_path)
 
         # self.trialBankTable.clicked.connect(self.trial_selected)
@@ -151,6 +159,35 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         print(fname)
         self.trialBankModel.load_arraydata(fname)
         self.queue_controller.trial_list = self.trialBankModel.arraydata
+
+    def save_config_data(self):
+        config = {'hardware_params': self.get_hardware_params(),
+                  'global_params': self.get_global_params(),
+                  'export_params': self.get_export_params()}
+
+        with open('params.config', 'wb') as fn:
+            pickle.dump(config, fn)
+
+    def load_config_data(self):
+        with open('params.config', 'rb') as fn:
+            config = pickle.load(fn)
+
+        hardware_params = config['hardware_params']
+        global_params = config['global_params']
+        export_params = config['export_params']
+
+        self.analogInDevEdit.setText(hardware_params['analog_dev'])
+        self.analogChannelsEdit.setText(str(hardware_params['analog_channels']))
+        self.digitalOutDevEdit.setText(hardware_params['digital_dev'])
+        self.digitalChannelsEdit.setText(str(hardware_params['digital_channels']))
+        self.syncClockEdit.setText(hardware_params['sync_clock'])
+        self.sampRateEdit.setText(str(hardware_params['samp_rate']))
+
+        self.globalOnsetEdit.setText(str(global_params['global_onset']))
+        self.globalOffsetEdit.setText(str(global_params['global_offset']))
+
+        self.exportPathEdit.setText(export_params['export_path'])
+        self.exportSuffixEdit.setText(export_params['export_suffix'])
 
     def get_hardware_params(self):
         params = dict()
