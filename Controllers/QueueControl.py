@@ -76,6 +76,7 @@ class QueueController:
     def start_queue(self):
         if not self.should_run:
             self.should_run = True
+            self.current_trial = 0
             self.thread.start()
 
     def pause_queue(self):
