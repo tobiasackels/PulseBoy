@@ -181,7 +181,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.digitalOutDevEdit.setText(hardware_params['digital_dev'])
         self.digitalChannelsEdit.setText(str(hardware_params['digital_channels']))
         self.syncClockEdit.setText(hardware_params['sync_clock'])
-        self.sampRateEdit.setText(str(hardware_params['samp_rate']))
+        self.sampRateEdit.setText(str(int(hardware_params['samp_rate'])))
 
         self.globalOnsetEdit.setText(str(global_params['global_onset']))
         self.globalOffsetEdit.setText(str(global_params['global_offset']))
