@@ -531,6 +531,7 @@
     </property>
     <addaction name="actionSave"/>
     <addaction name="actionLoad"/>
+    <addaction name="actionSave_Configuration"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -543,6 +544,11 @@
   <action name="actionLoad">
    <property name="text">
     <string>Load</string>
+   </property>
+  </action>
+  <action name="actionSave_Configuration">
+   <property name="text">
+    <string>Save Configuration</string>
    </property>
   </action>
  </widget>
