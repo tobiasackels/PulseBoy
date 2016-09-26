@@ -3,6 +3,7 @@ import pickle as pickle
 
 default_row = [[0, [], '']]
 
+
 class ExperimentModel(QtCore.QAbstractTableModel):
     def __init__(self, parent=None, *args):
         QtCore.QAbstractTableModel.__init__(self, parent, *args)
