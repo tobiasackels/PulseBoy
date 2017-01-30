@@ -1,6 +1,6 @@
 import sys
 
-import PulseInterface
+from PyPulse import PulseInterface
 import numpy as np
 from PyQt5 import QtWidgets
 
@@ -18,11 +18,15 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         super(self.__class__, self).__init__()
         self.setupUi(self)
 
-        # Setup Experiment Data
+        # Setup Experiment Data / Controller
         self.trialBankModel = Experiment.ExperimentModel(self)
         self.trialBankTable.setModel(self.trialBankModel)
-        self.queue_controller = QueueControl.QueueController(self.trialBankModel.arraydata, self.get_global_params,
-                                                             self.get_hardware_params, self.get_export_params)
+
+        self.queue_controller = QueueControl.QueueControllerExperimental(self, self.trialBankModel.arraydata,
+                                                                         self.get_global_params,
+                                                                         self.get_hardware_params,
+                                                                         self.get_export_params)
+
         if os.path.exists('params.config'):
             try:
                 self.load_config_data()
@@ -43,15 +47,14 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.actionSave_Configuration.triggered.connect(self.save_config_data)
         self.exportPathDirButton.clicked.connect(self.set_export_path)
 
-        # self.trialBankTable.clicked.connect(self.trial_selected)
         self.trialBankTable.selectionModel().selectionChanged.connect(self.trial_selected)
-        self.queue_controller.thread.start_trigger.connect(self.select_current_trial)
-        self.queue_controller.thread.finish_trigger.connect(self.plot_analog_data)
+        self.queue_controller.trial_job.trial_start.connect(self.select_current_trial)
+        # self.queue_controller.trial_job.trial_end.connect(self.plot_analog_data) - TODO, needs DAQ to test
 
-        self.startQueueButton.clicked.connect(self.queue_controller.start_queue)
-        self.stopQueueButton.clicked.connect(self.queue_controller.stop_queue)
-        self.pauseQueueButton.clicked.connect(self.queue_controller.pause_queue)
-        self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
+        self.startQueueButton.clicked.connect(self.queue_controller.start)
+        self.stopQueueButton.clicked.connect(self.queue_controller.stop)
+        self.pauseQueueButton.clicked.connect(self.queue_controller.pause)
+        # self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
 
     def add_valve(self, v_type='Simple', params=None):
         if v_type == 'Simple':
