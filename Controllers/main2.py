@@ -22,7 +22,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.trialBankModel = Experiment.ExperimentModel(self)
         self.trialBankTable.setModel(self.trialBankModel)
 
-        self.queue_controller = QueueControl2.QueueController(self, self.trialBankModel.arraydata,
+        self.queue_controller = QueueControl2.QueueController(self, self.trialBankModel,
                                                               self.get_global_params,
                                                               self.get_hardware_params,
                                                               self.get_export_params)
@@ -48,7 +48,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.exportPathDirButton.clicked.connect(self.set_export_path)
 
         self.trialBankTable.selectionModel().selectionChanged.connect(self.trial_selected)
-        self.queue_controller.trial_job.trial_start.connect(self.select_current_trial)
+        self.queue_controller.trial_start.connect(self.select_current_trial)
         # self.queue_controller.trial_job.trial_end.connect(self.plot_analog_data) - TODO, needs DAQ to test
 
         self.startQueueButton.clicked.connect(self.queue_controller.start)
@@ -134,7 +134,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.update_valve_bank(selected_trial)
 
     def select_current_trial(self):
-        self.trialBankTable.selectRow(self.queue_controller.current_trial)
+        self.trialBankTable.selectRow(self.trialBankModel.current_trial)
 
     def select_trial(self, trial_n):
         self.trialBankTable.selectRow(trial_n)

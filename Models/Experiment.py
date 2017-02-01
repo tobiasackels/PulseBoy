@@ -9,6 +9,7 @@ class ExperimentModel(QtCore.QAbstractTableModel):
         QtCore.QAbstractTableModel.__init__(self, parent, *args)
         self.headerdata = ['Active Valves', 'Parameters', 'Trial Name']
         self.arraydata = default_row.copy()
+        self.current_trial = 0
 
     def rowCount(self, parent):
         return len(self.arraydata)
@@ -92,6 +93,9 @@ class ExperimentModel(QtCore.QAbstractTableModel):
                 pickle.dump(self.arraydata, fn)
         except:
             pass
+
+    def advance_trial(self):
+        self.current_trial += 1
 
 
 
