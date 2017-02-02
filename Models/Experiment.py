@@ -97,5 +97,9 @@ class ExperimentModel(QtCore.QAbstractTableModel):
     def advance_trial(self):
         self.current_trial += 1
 
+    def reset_trials(self):
+        if self.current_trial is not -1:
+            self.current_trial = -1
+
 
 

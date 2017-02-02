@@ -33,20 +33,17 @@ class QueueWorker(QtCore.QObject):
                                       len(t) / hardware_params['samp_rate'], pulses,
                                       hardware_params['sync_clock'])
 
-        analog_data = trial_daq.DoTask()
-        print(analog_data)
+        analog = trial_daq.DoTask()
 
         self.experiment.advance_trial()
+        sleep(1)
 
         self.finished.emit()
 
 
 class QueueController(QtCore.QObject):
-    trial_start = QtCore.pyqtSignal()
-
-    def __init__(self, parent, experiment, get_global_params, get_hardware_params, get_export_params):
+    def __init__(self, experiment, get_global_params, get_hardware_params, get_export_params):
         super(self.__class__, self).__init__(None)
-        self.parent = parent
 
         self.get_global_params = get_global_params
         self.get_hardware_params = get_hardware_params
@@ -55,6 +52,7 @@ class QueueController(QtCore.QObject):
 
         self.safe_to_run = True
         self.to_stop = False
+        self.thread = QtCore.QThread()
         self.prepare_thread()
 
     def prepare_thread(self):
@@ -69,15 +67,22 @@ class QueueController(QtCore.QObject):
         if self.safe_to_run:
             self.safe_to_run = False
             self.to_stop = False
+            while self.thread.isRunning():
+                sleep(0.05)
             self.thread.start()
 
     def stop(self):
         self.to_stop = True
-        self.experiment.current_trial = 0
+        self.experiment.reset_trials()
+
+    def pause(self):
+        self.to_stop = True
 
     def finished(self):
         self.thread.quit()
         self.thread.wait()
+        while self.thread.isRunning():
+            sleep(0.05)
         self.safe_to_run = True
 
         if self.to_stop:
