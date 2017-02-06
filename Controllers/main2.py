@@ -131,6 +131,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         for p, pulse in enumerate(pulses):
             self.graphicsView.plotItem.plot(t, np.array(pulse) - (p * 1.1))
 
+        self.trialNameEdit.setText(self.trialBankModel.arraydata[selected_trial][2])
+
         self.update_valve_bank(selected_trial)
 
     def select_current_trial(self):
