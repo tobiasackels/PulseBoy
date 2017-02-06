@@ -98,8 +98,10 @@ class ExperimentModel(QtCore.QAbstractTableModel):
         self.current_trial += 1
 
     def reset_trials(self):
-        if self.current_trial is not -1:
-            self.current_trial = -1
+        self.current_trial = 0
+
+    def total_trials(self):
+        return len(self.arraydata)
 
 
 

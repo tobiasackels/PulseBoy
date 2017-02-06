@@ -48,13 +48,13 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.exportPathDirButton.clicked.connect(self.set_export_path)
 
         self.trialBankTable.selectionModel().selectionChanged.connect(self.trial_selected)
-        # self.queue_controller.trial_start.connect(self.select_current_trial)
+        self.queue_controller.trial_start.connect(self.select_current_trial)
         # self.queue_controller.trial_job.trial_end.connect(self.plot_analog_data) - TODO, needs DAQ to test
 
         self.startQueueButton.clicked.connect(self.queue_controller.start)
         self.stopQueueButton.clicked.connect(self.queue_controller.stop)
         self.pauseQueueButton.clicked.connect(self.queue_controller.pause)
-        # TODO - self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
+        self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
 
     def add_valve(self, v_type='Simple', params=None):
         if v_type == 'Simple':
