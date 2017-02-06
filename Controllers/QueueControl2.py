@@ -10,12 +10,13 @@ class QueueWorker(QtCore.QObject):
     finished = QtCore.pyqtSignal()
     trial_start = QtCore.pyqtSignal()
 
-    def __init__(self, parent, experiment, get_global_params, get_hardware_params):
+    def __init__(self, parent, experiment, get_global_params, get_hardware_params, get_export_params):
         super(self.__class__, self).__init__(None)
         self.parent = parent
         self.experiment = experiment
         self.get_global_params = get_global_params
         self.get_hardware_params = get_hardware_params
+        self.get_export_params = get_export_params
 
     @QtCore.pyqtSlot()
     def trial(self):
@@ -27,6 +28,7 @@ class QueueWorker(QtCore.QObject):
                 trial_params = self.experiment.arraydata[self.experiment.current_trial][1]
                 hardware_params = self.get_hardware_params()
                 global_params = self.get_global_params()
+                export_params = self.get_export_params()
 
                 pulses, t = PulseInterface.make_pulse(hardware_params['samp_rate'],
                                                       global_params['global_onset'],
@@ -38,7 +40,12 @@ class QueueWorker(QtCore.QObject):
                                                    len(t) / hardware_params['samp_rate'], pulses,
                                                    hardware_params['sync_clock'])
 
-                self.trial_daq.DoTask()
+                self.analog_data = self.trial_daq.DoTask()
+
+                # Save data
+                save_string = export_params['export_path'] + str(self.experiment.current_trial) + \
+                              export_params['export_suffix'] + '.mat'
+                sio.savemat(save_string, {'analog_data': self.analog_data, 'pulses': pulses, 't': t})
 
                 if self.experiment.total_trials() - self.experiment.current_trial == 1:
                     self.parent.should_run = False
@@ -65,7 +72,8 @@ class QueueController(QtCore.QObject):
 
     def prepare_thread(self):
         self.thread = QtCore.QThread()
-        self.worker = QueueWorker(self, self.experiment, self.get_global_params, self.get_hardware_params)
+        self.worker = QueueWorker(self, self.experiment, self.get_global_params, self.get_hardware_params,
+                                  self.get_export_params)
         self.worker.moveToThread(self.thread)
         self.worker.trial_start.connect(self.trial_start.emit)
         self.thread.started.connect(self.worker.trial)
