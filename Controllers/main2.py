@@ -156,8 +156,9 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             self.analogView.plotItem.plot(t, np.array(analog) - (a * 1.1))
 
     def save(self):
-        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", "", ".trialbank")
-        self.trialBankModel.save_arraydata(fname)
+        fname, suff = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", "", "Trial Bank (*.trialbank)")
+        fname = fname.strip('.trialbank')
+        self.trialBankModel.save_arraydata((fname, suff))
 
     def load(self):
         fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", '', '*.trialbank')

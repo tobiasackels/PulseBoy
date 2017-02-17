@@ -96,7 +96,6 @@ class QueueController(QtCore.QObject):
         self.experiment.reset_trials()
 
     def run_selected(self, trial):
-        print("here", trial)
         if not self.should_run:
             self.should_run = True
             self.experiment.current_trial = trial
