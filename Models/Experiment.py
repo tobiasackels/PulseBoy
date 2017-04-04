@@ -92,6 +92,7 @@ class ExperimentModel(QtCore.QAbstractTableModel):
             with open(file_conf[0] + file_conf[1], 'wb') as fn:
                 pickle.dump(self.arraydata, fn)
         except:
+            print("save failed")
             pass
 
     def advance_trial(self):

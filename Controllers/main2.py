@@ -157,7 +157,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
     def save(self):
         fname, suff = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", "", "Trial Bank (*.trialbank)")
-        fname = fname.strip('.trialbank')
+        fname, suff = fname.split('.')
+        suff = '.' + suff
         self.trialBankModel.save_arraydata((fname, suff))
 
     def load(self):
