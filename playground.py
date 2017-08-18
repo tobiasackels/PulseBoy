@@ -1,36 +1,28 @@
-from PulseGeneration import *
+from PyPulse import PulseGeneration, PulseInterface
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.io as sio
+from scipy import signal
 
-params1 = {'seed': 1,
-          'frequency': 20.0,
-          'shatter_frequency': 500.0,
-          'fromLength': True,
-          'length': 3,
-          'amp_min': 0.1,
-          'amp_max': 0.9,
-          'onset': 0.1,
-          'offset': 0.2}
+data = sio.loadmat('TestData/testData.mat')
+plume = data['plume']
+plume = plume[0][0:30000]
+print(len(plume))
 
-params2 = {'seed': 1,
-           'frequency': 20.0,
-           'shatter_frequency': 500.0,
-           'fromLength': True,
-           'length': 3,
-           'amp_min': 0.1,
-           'amp_max': 0.9,
-           'onset': 0.1,
-           'offset': 0.2}
-
-samp_rate = 30000
-
-pulse1, t = noise_pulse(samp_rate, params1)
-pulse2, t = noise_pulse(samp_rate, params2)
-
-print(np.array_equal(pulse1, pulse2))
+resampled = signal.resample(plume, 30000*3)
 
 plt.figure()
-plt.hold(True)
-plt.plot(t, pulse1)
-plt.plot(t, -pulse2)
+plt.plot(np.linspace(0, 1, 30000), plume, 'k.')
+plt.plot(np.linspace(0, 1, 90000), resampled, 'r.')
 plt.show()
+
+
+
+# x = np.linspace(0, 10, 20, endpoint=False)
+# y = np.cos(-x**2/6.0)
+# f = signal.resample(y, 100)
+# xnew = np.linspace(0, 10, 100, endpoint=False)
+#
+# plt.plot(x, y, 'go-', xnew, f, '.-', 10, y[0], 'ro')
+# plt.legend(['data', 'resampled'], loc='best')
+# plt.show()
