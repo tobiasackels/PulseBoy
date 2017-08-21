@@ -61,6 +61,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents)
         elif v_type == 'Noise':
             new_valve = PBWidgets.NoiseValveWidget(self.valveBankContents)
+        elif v_type == 'Plume':
+            new_valve = PBWidgets.PlumeValveWidget(self.valveBankContents)
         else:
             new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents)
 
