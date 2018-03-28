@@ -5,7 +5,7 @@ import numpy as np
 from PyQt5 import QtWidgets
 
 import Models.Experiment as Experiment
-from Controllers import QueueControl, QueueControl2
+from Controllers import QueueControl, QueueControl
 from Designs import mainDesign
 from Models import PBWidgets
 import pickle as pickle
@@ -22,10 +22,10 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.trialBankModel = Experiment.ExperimentModel(self)
         self.trialBankTable.setModel(self.trialBankModel)
 
-        self.queue_controller = QueueControl2.QueueController(self, self.trialBankModel.arraydata,
-                                                              self.get_global_params,
-                                                              self.get_hardware_params,
-                                                              self.get_export_params)
+        self.queue_controller = QueueControl.QueueController(self.trialBankModel,
+                                                             self.get_global_params,
+                                                             self.get_hardware_params,
+                                                             self.get_export_params)
 
         if os.path.exists('params.config'):
             try:
@@ -48,19 +48,21 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.exportPathDirButton.clicked.connect(self.set_export_path)
 
         self.trialBankTable.selectionModel().selectionChanged.connect(self.trial_selected)
-        self.queue_controller.trial_job.trial_start.connect(self.select_current_trial)
+        self.queue_controller.trial_start.connect(self.select_current_trial)
         # self.queue_controller.trial_job.trial_end.connect(self.plot_analog_data) - TODO, needs DAQ to test
 
         self.startQueueButton.clicked.connect(self.queue_controller.start)
         self.stopQueueButton.clicked.connect(self.queue_controller.stop)
-        # TODO - self.pauseQueueButton.clicked.connect(self.queue_controller.pause)
-        # TODO - self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
+        self.pauseQueueButton.clicked.connect(self.queue_controller.pause)
+        self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
 
     def add_valve(self, v_type='Simple', params=None):
         if v_type == 'Simple':
             new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents)
         elif v_type == 'Noise':
             new_valve = PBWidgets.NoiseValveWidget(self.valveBankContents)
+        elif v_type == 'Plume':
+            new_valve = PBWidgets.PlumeValveWidget(self.valveBankContents)
         else:
             new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents)
 
@@ -131,10 +133,12 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         for p, pulse in enumerate(pulses):
             self.graphicsView.plotItem.plot(t, np.array(pulse) - (p * 1.1))
 
+        self.trialNameEdit.setText(self.trialBankModel.arraydata[selected_trial][2])
+
         self.update_valve_bank(selected_trial)
 
     def select_current_trial(self):
-        self.trialBankTable.selectRow(self.queue_controller.current_trial)
+        self.trialBankTable.selectRow(self.trialBankModel.current_trial)
 
     def select_trial(self, trial_n):
         self.trialBankTable.selectRow(trial_n)
@@ -154,8 +158,10 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             self.analogView.plotItem.plot(t, np.array(analog) - (a * 1.1))
 
     def save(self):
-        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", "", ".trialbank")
-        self.trialBankModel.save_arraydata(fname)
+        fname, suff = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", "", "Trial Bank (*.trialbank)")
+        fname, suff = fname.split('.')
+        suff = '.' + suff
+        self.trialBankModel.save_arraydata((fname, suff))
 
     def load(self):
         fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", '', '*.trialbank')
