@@ -25,7 +25,10 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.queue_controller = QueueControl.QueueController(self.trialBankModel,
                                                              self.get_global_params,
                                                              self.get_hardware_params,
-                                                             self.get_export_params)
+                                                             self.get_export_params,
+                                                             self.triggerWaitCheckBox)
+
+        # self.triggerWaitCheckBox.isChecked()
 
         if os.path.exists('params.config'):
             try:
@@ -191,6 +194,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.digitalChannelsEdit.setText(str(hardware_params['digital_channels']))
         self.syncClockEdit.setText(hardware_params['sync_clock'])
         self.sampRateEdit.setText(str(int(hardware_params['samp_rate'])))
+        self.triggerInEdit.setText(str(hardware_params['trigger_source']))
 
         self.globalOnsetEdit.setText(str(global_params['global_onset']))
         self.globalOffsetEdit.setText(str(global_params['global_offset']))
@@ -206,6 +210,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         params['digital_channels'] = int(self.digitalChannelsEdit.text())
         params['sync_clock'] = self.syncClockEdit.text()
         params['samp_rate'] = float(self.sampRateEdit.text())
+        params['trigger_source'] = self.triggerInEdit.text()
 
         return params
 

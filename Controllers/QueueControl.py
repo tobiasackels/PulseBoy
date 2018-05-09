@@ -35,12 +35,25 @@ class QueueWorker(QtCore.QObject):
                                                       global_params['global_offset'],
                                                       trial_params)
 
-                self.trial_daq = daq.DoAiMultiTask(hardware_params['analog_dev'], hardware_params['analog_channels'],
-                                                   hardware_params['digital_dev'], hardware_params['samp_rate'],
-                                                   len(t) / hardware_params['samp_rate'], pulses,
-                                                   hardware_params['sync_clock'])
+                # in standard configuration we want to run each trial sequentially
+                if not self.parent.trigger_state():
+                    self.trial_daq = daq.DoAiMultiTask(hardware_params['analog_dev'], hardware_params['analog_channels'],
+                                                       hardware_params['digital_dev'], hardware_params['samp_rate'],
+                                                       len(t) / hardware_params['samp_rate'], pulses,
+                                                       hardware_params['sync_clock'])
 
-                self.analog_data = self.trial_daq.DoTask()
+                    self.analog_data = self.trial_daq.DoTask()
+                # unless the 'wait for trigger' box is checked, in which case we want to wait for our trigger in
+                else:
+                    self.trial_daq = daq.DoAiTriggeredMultiTask(hardware_params['analog_dev'],
+                                                                hardware_params['analog_channels'],
+                                                                hardware_params['digital_dev'],
+                                                                hardware_params['samp_rate'],
+                                                                len(t) / hardware_params['samp_rate'], pulses,
+                                                                hardware_params['sync_clock'],
+                                                                hardware_params['trigger_source'])
+
+                    self.analog_data = self.trial_daq.DoTask()
 
                 # Save data
                 save_string = export_params['export_path'] + str(self.experiment.current_trial) + \
@@ -60,7 +73,7 @@ class QueueWorker(QtCore.QObject):
 class QueueController(QtCore.QObject):
     trial_start = QtCore.pyqtSignal()
 
-    def __init__(self, experiment, get_global_params, get_hardware_params, get_export_params):
+    def __init__(self, experiment, get_global_params, get_hardware_params, get_export_params, trigger_control):
         super(self.__class__, self).__init__(None)
         self.experiment = experiment
         self.get_global_params = get_global_params
@@ -69,6 +82,7 @@ class QueueController(QtCore.QObject):
         self.prepare_thread()
 
         self.should_run = False
+        self.trigger_control = trigger_control
 
     def prepare_thread(self):
         self.thread = QtCore.QThread()
@@ -104,4 +118,7 @@ class QueueController(QtCore.QObject):
 
     def finished(self):
         print("not implemented")
+
+    def trigger_state(self):
+        return self.trigger_control.isChecked()
 
