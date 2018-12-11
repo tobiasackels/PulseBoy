@@ -1,9 +1,10 @@
 import sys
+sys.path.insert(0, "C:\\Users\\warnert\\Documents\\GitHub")
+sys.path.insert(0, "C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy")
 
 from PyPulse import PulseInterface
 import numpy as np
 from PyQt5 import QtWidgets
-
 import Models.Experiment as Experiment
 from Controllers import QueueControl, QueueControl
 from Designs import mainDesign
