@@ -45,6 +45,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.removeTrialButton.clicked.connect(self.remove_trial)
         self.moveUpButton.clicked.connect(self.move_trial_up)
         self.moveDownButton.clicked.connect(self.move_trial_down)
+        self.randomiseTrialsButton.clicked.connect(self.randomise_trials)
 
         self.actionSave.triggered.connect(self.save)
         self.actionLoad.triggered.connect(self.load)
@@ -60,12 +61,15 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.pauseQueueButton.clicked.connect(self.queue_controller.pause)
         self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
 
+
     def add_valve(self, v_type='Simple', params=None):
         if v_type == 'Simple':
             new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents)
         elif v_type == 'Noise':
             new_valve = PBWidgets.NoiseValveWidget(self.valveBankContents)
         elif v_type == 'Plume':
+            new_valve = PBWidgets.PlumeValveWidget(self.valveBankContents)
+        elif v_type == 'Anti Plume':
             new_valve = PBWidgets.PlumeValveWidget(self.valveBankContents)
         else:
             new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents)
@@ -120,6 +124,9 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.trialBankModel.move_trial_down(idx)
         if idx < len(self.trialBankModel.arraydata):
             self.select_trial(idx + 1)
+
+    def randomise_trials(self):
+        self.trialBankModel.randomise_trials()
 
     def trial_selected(self):
         try:
