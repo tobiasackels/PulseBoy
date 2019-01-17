@@ -106,4 +106,4 @@ class ExperimentModel(QtCore.QAbstractTableModel):
         return len(self.arraydata)
 
     def randomise_trials(self):
-        self.arraydata = random.shuffle(self.arraydata)
+        random.shuffle(self.arraydata)

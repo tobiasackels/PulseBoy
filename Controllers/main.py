@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, "C:\\Users\\warnert\\Documents\\GitHub")
-sys.path.insert(0, "C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy")
+sys.path.insert(0, "C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy_old")
 
 from PyPulse import PulseInterface
 import numpy as np
