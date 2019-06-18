@@ -71,6 +71,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             new_valve = PBWidgets.PlumeValveWidget(self.valveBankContents)
         elif v_type == 'Anti Plume':
             new_valve = PBWidgets.AntiPlumeValveWidget(self.valveBankContents)
+        elif v_type == 'Binary':
+            new_valve = PBWidgets.BinaryPlumeValveWidget(self.valveBankContents)
         else:
             new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents)
 
