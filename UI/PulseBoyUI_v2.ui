@@ -314,6 +314,11 @@
           </item>
           <item>
            <property name="text">
+            <string>Binary</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>Anti Plume</string>
            </property>
           </item>
