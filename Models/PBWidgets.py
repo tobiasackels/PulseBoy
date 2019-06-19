@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 
-from Designs import trialDesign, simpleValveDesign, noiseValveDesign, plumeValveDesign
+from Designs import trialDesign, simpleValveDesign, noiseValveDesign, plumeValveDesign, binaryValveDesign
 
 
 # TODO - These widgets could inherit from a common PBWidget parent that implements remove_from_parent etc.
@@ -189,6 +189,44 @@ class AntiPlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
     def load_plume_data(self):
         fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", '', '*.mat')
         self.plumeDataLabel.setText(fname)
+
+
+class BinaryPlumeWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
+    def __init__(self, parentUi=None):
+        super(self.__clas__, self).__init__()
+        self.setupUi(self)
+
+        self.parentUi = parentUi
+
+        self.removeButton.clicked.connect(self.remove_from_parent)
+        self.openBinaryDataButton.clicked.connect(self.load_binary_data)
+
+    def remove_from_parent(self):
+        self.parentUi.layout().removeWidget(self)
+        self.deleteLater()
+
+    def get_parameters(self):
+        params = dict()
+
+        params['type'] = 'Binary'
+
+        params['onset'] = float(self.onsetEdit.text())
+        params['offset'] = float(self.offsetEdit.text())
+        params['data_fs'] = float(self.dataSamplingRateEdit.text())
+        params['data_path'] = float(self.binaryDataLabel.text())
+
+        return params
+
+    def set_parameters(self, params):
+        self.onsetEdit.setText(str(params['onset']))
+        self.offsetEdit.setText(str(params['offset']))
+        self.binaryDataLabel.setText(str(params['data_path']))
+        self.dataSamplingRateEdit.setText(str(params['data_fs']))
+
+    def load_binary_data(self):
+        fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', '', '*.npy')
+        self.binaryDataLabel.setText(fname)
+
 
 class TrialWidget(QtWidgets.QWidget, trialDesign.Ui_Form):
     def __init__(self, n_valves, parent=None):
