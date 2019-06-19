@@ -191,7 +191,7 @@ class AntiPlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
         self.plumeDataLabel.setText(fname)
 
 
-class BinaryPlumeWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
+class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
     def __init__(self, parentUi=None):
         super(self.__clas__, self).__init__()
         self.setupUi(self)
