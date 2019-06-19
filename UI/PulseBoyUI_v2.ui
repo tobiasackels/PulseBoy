@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1229</width>
-    <height>856</height>
+    <height>809</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,8 +15,49 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
+    <item row="3" column="2">
+     <widget class="QTabWidget" name="viewWidgetTab">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="pulseTab">
+       <attribute name="title">
+        <string>Pulses</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <widget class="PlotWidget" name="graphicsView">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="analogDataTab">
+       <attribute name="title">
+        <string>Analog Data</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <widget class="PlotWidget" name="analogView">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_8">
       <property name="font">
        <font>
         <family>Lucida Console</family>
@@ -26,36 +67,8 @@
        </font>
       </property>
       <property name="text">
-       <string>Valve Bank</string>
+       <string>Trial Bank</string>
       </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QScrollArea" name="valveBankScrollArea">
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="valveBankContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>18</width>
-         <height>372</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <layout class="QVBoxLayout" name="valveBankLayout">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetFixedSize</enum>
-        </property>
-       </layout>
-      </widget>
      </widget>
     </item>
     <item row="3" column="0">
@@ -82,8 +95,36 @@
       </attribute>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_8">
+    <item row="1" column="0">
+     <widget class="QScrollArea" name="valveBankScrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="valveBankContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>18</width>
+         <height>348</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QVBoxLayout" name="valveBankLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
       <property name="font">
        <font>
         <family>Lucida Console</family>
@@ -93,7 +134,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Trial Bank</string>
+       <string>Valve Bank</string>
       </property>
      </widget>
     </item>
@@ -314,6 +355,11 @@
           </item>
           <item>
            <property name="text">
+            <string>Binary</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>Anti Plume</string>
            </property>
           </item>
@@ -471,47 +517,6 @@
          <widget class="QPushButton" name="exportPathDirButton">
           <property name="text">
            <string>...</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QTabWidget" name="viewWidgetTab">
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <widget class="QWidget" name="pulseTab">
-       <attribute name="title">
-        <string>Pulses</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <widget class="PlotWidget" name="graphicsView">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="analogDataTab">
-       <attribute name="title">
-        <string>Analog Data</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_6">
-        <item row="0" column="0">
-         <widget class="PlotWidget" name="analogView">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
           </property>
          </widget>
         </item>
