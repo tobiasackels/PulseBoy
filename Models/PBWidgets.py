@@ -213,7 +213,7 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         params['onset'] = float(self.onsetEdit.text())
         params['offset'] = float(self.offsetEdit.text())
         params['data_fs'] = float(self.dataSamplingRateEdit.text())
-        params['data_path'] = float(self.binaryDataLabel.text())
+        params['data_path'] = str(self.binaryDataLabel.text())
 
         return params
 
