@@ -37,12 +37,18 @@ class QueueWorker(QtCore.QObject):
 
                 # in standard configuration we want to run each trial sequentially
                 if not self.parent.trigger_state():
-                    self.trial_daq = daq.DoAiMultiTask(hardware_params['analog_dev'], hardware_params['analog_channels'],
-                                                       hardware_params['digital_dev'], hardware_params['samp_rate'],
-                                                       len(t) / hardware_params['samp_rate'], pulses,
-                                                       hardware_params['sync_clock'])
+                    if hardware_params['analog_channels'] > 0:
+                        self.trial_daq = daq.DoAiMultiTask(hardware_params['analog_dev'], hardware_params['analog_channels'],
+                                                           hardware_params['digital_dev'], hardware_params['samp_rate'],
+                                                           len(t) / hardware_params['samp_rate'], pulses,
+                                                           hardware_params['sync_clock'])
 
-                    self.analog_data = self.trial_daq.DoTask()
+                        self.analog_data = self.trial_daq.DoTask()
+                    else:
+                        self.trial_daq = daq.DoCoTask(hardware_params['digital_dev'], '', hardware_params['samp_rate'],
+                                                      len(t) / hardware_params['samp_rate'], pulses)
+                        self.trial_daq.DoTask()
+                        self.analog_data = []
                 # unless the 'wait for trigger' box is checked, in which case we want to wait for our trigger in
                 else:
                     self.trial_daq = daq.DoAiTriggeredMultiTask(hardware_params['analog_dev'],
