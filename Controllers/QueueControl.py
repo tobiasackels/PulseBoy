@@ -51,7 +51,8 @@ class QueueWorker(QtCore.QObject):
                         self.analog_data = []
                 # unless the 'wait for trigger' box is checked, in which case we want to wait for our trigger in
                 else:
-                    self.trial_daq = daq.DoAiTriggeredMultiTask(hardware_params['analog_dev'],
+                    if hardware_params['analog_channels'] > 0 :
+                        self.trial_daq = daq.DoAiTriggeredMultiTask(hardware_params['analog_dev'],
                                                                 hardware_params['analog_channels'],
                                                                 hardware_params['digital_dev'],
                                                                 hardware_params['samp_rate'],
@@ -59,7 +60,11 @@ class QueueWorker(QtCore.QObject):
                                                                 hardware_params['sync_clock'],
                                                                 hardware_params['trigger_source'])
 
-                    self.analog_data = self.trial_daq.DoTask()
+                        self.analog_data = self.trial_daq.DoTask()
+                    else:
+                        self.trial_daq= daq.DoTriggeredCoTask(hardware_params['digital_dev'], '', hardware_params['samp_rate'], len(t) / hardware_params['samp_rate'], pulses, hardware_params['trigger_source'])
+                        self.trial_daq.DoTask()
+                        self.analog_data = []
 
                 # Save data
                 save_string = export_params['export_path'] + str(self.experiment.current_trial) + \
