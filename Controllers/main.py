@@ -1,6 +1,6 @@
 import sys
-#sys.path.append('Path/to/github/here')
-#sys.path.append('path/to/pulseboy/here')
+sys.path.append('C:\\Users\\warnert\\Documents\\GitHub')
+sys.path.append('C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy_updated\\PulseBoy')
 from PyPulse import PulseInterface
 import numpy as np
 from PyQt5 import QtWidgets
