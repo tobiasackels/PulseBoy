@@ -200,7 +200,6 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         self.parentUi = parentUi
 
         self.removeButton.clicked.connect(self.remove_from_parent)
-        self.openBinaryDataButton.clicked.connect(self.load_binary_data)
 
     def remove_from_parent(self):
         self.parentUi.layout().removeWidget(self)
@@ -213,16 +212,17 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
 
         params['onset'] = float(self.onsetEdit.text())
         params['offset'] = float(self.offsetEdit.text())
-        params['data_fs'] = float(self.dataSamplingRateEdit.text())
-        params['data_path'] = str(self.binaryDataLabel.text())
-
+        params['num_of_bins'] = float(self.numofbinsEdit.text())
+        params['value_to_binarise'] = int(self.valuetobinariseEdit.text())
+        params['bin_size'] = float(self.binsizeEdit.text())
         return params
 
     def set_parameters(self, params):
         self.onsetEdit.setText(str(params['onset']))
         self.offsetEdit.setText(str(params['offset']))
-        self.binaryDataLabel.setText(str(params['data_path']))
-        self.dataSamplingRateEdit.setText(str(params['data_fs']))
+        self.numofbinsEdit.setText(str(params['num_of_bins']))
+        self.valuetobinariseEdit.setText(str(params['value_to_binarise']))
+        self.binsizeEdit.setText(str(params['bin_size']))
 
     def load_binary_data(self):
         fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', '', '*.npy')
