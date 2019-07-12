@@ -200,7 +200,6 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         self.parentUi = parentUi
 
         self.removeButton.clicked.connect(self.remove_from_parent)
-        self.openBinaryDataButton.clicked.connect(self.load_binary_data)
 
     def remove_from_parent(self):
         self.parentUi.layout().removeWidget(self)
@@ -215,7 +214,7 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         params['offset'] = float(self.offsetEdit.text())
         params['num_of_bins'] = float(self.numofbinsEdit.text())
         params['value_to_binarise'] = int(self.valuetobinariseEdit.text())
-        params['bin_size'] = flost(self.binsizeEdit.text())
+        params['bin_size'] = float(self.binsizeEdit.text())
         return params
 
     def set_parameters(self, params):
