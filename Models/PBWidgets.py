@@ -150,6 +150,7 @@ class PlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
         fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", '', '*.mat')
         self.plumeDataLabel.setText(fname)
 
+
 class AntiPlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
     def __init__(self, parentUi=None):
         super(self.__class__, self).__init__()
