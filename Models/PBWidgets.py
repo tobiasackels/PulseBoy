@@ -215,6 +215,7 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         params['num_of_bins'] = float(self.numofbinsEdit.text())
         params['value_to_binarise'] = int(self.valuetobinariseEdit.text())
         params['bin_size'] = float(self.binsizeEdit.text())
+        params['shatter_frequency'] = float(self.shatterEdit.text())
         return params
 
     def set_parameters(self, params):
@@ -223,10 +224,8 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         self.numofbinsEdit.setText(str(params['num_of_bins']))
         self.valuetobinariseEdit.setText(str(params['value_to_binarise']))
         self.binsizeEdit.setText(str(params['bin_size']))
+        self.shatterEdit.setText(str(params['shatter_frequency']))
 
-    def load_binary_data(self):
-        fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', '', '*.npy')
-        self.binaryDataLabel.setText(fname)
 
 
 class TrialWidget(QtWidgets.QWidget, trialDesign.Ui_Form):
