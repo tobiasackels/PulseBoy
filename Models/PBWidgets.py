@@ -39,6 +39,7 @@ class SimpleValveWidget(QtWidgets.QWidget, simpleValveDesign.Ui_Form):
         params['shatter_duty'] = float(self.shatterDutyEdit.text())
         params['repeats'] = int(self.repeatsEdit.text())
         params['length'] = float(self.lengthEdit.text())
+        params['position'] = int(len(self.parentUi.children()) - 1)
 
         return params
 
@@ -61,6 +62,7 @@ class SimpleValveWidget(QtWidgets.QWidget, simpleValveDesign.Ui_Form):
         self.shatterDutyEdit.setText(str(params['shatter_duty']))
         self.repeatsEdit.setText(str(params['repeats']))
         self.lengthEdit.setText(str(params['length']))
+        self.position.setText(params['position'])
 
 
 class NoiseValveWidget(QtWidgets.QWidget, noiseValveDesign.Ui_Form):
@@ -93,6 +95,8 @@ class NoiseValveWidget(QtWidgets.QWidget, noiseValveDesign.Ui_Form):
         params['repeats'] = int(self.repeatsEdit.text())
         params['length'] = float(self.lengthEdit.text())
         params['shatter_frequency'] = float(self.shatterHzEdit.text())
+        params['position'] = int(len(self.parentUi.children()) - 1)
+
 
         return params
 
@@ -108,6 +112,7 @@ class NoiseValveWidget(QtWidgets.QWidget, noiseValveDesign.Ui_Form):
         self.ampMaxEdit.setText(str(params['amp_max']))
         self.repeatsEdit.setText(str(params['repeats']))
         self.lengthEdit.setText(str(params['length']))
+        self.position.setText(params['position'])
 
 
 class PlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
@@ -135,6 +140,8 @@ class PlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
         params['data_fs'] = float(self.dataSamplingRateEdit.text())
         params['data_path'] = str(self.plumeDataLabel.text())
         params['target_max'] = float(self.targetMaxEdit.text())
+        params['position'] = int(len(self.parentUi.children()) - 1)
+
 
         return params
 
@@ -145,6 +152,7 @@ class PlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
         self.plumeDataLabel.setText(params['data_path'])
         self.dataSamplingRateEdit.setText(str(params['data_fs']))
         self.targetMaxEdit.setText(str(params['target_max']))
+        self.position.setText(params['position'])
 
     def load_plume_data(self):
         fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", '', '*.mat')
@@ -176,6 +184,7 @@ class AntiPlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
         params['data_fs'] = float(self.dataSamplingRateEdit.text())
         params['data_path'] = str(self.plumeDataLabel.text())
         params['target_max'] = float(self.targetMaxEdit.text())
+        params['position'] = int(len(self.parentUi.children()) - 1)
 
         return params
 
@@ -186,6 +195,7 @@ class AntiPlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
         self.plumeDataLabel.setText(params['data_path'])
         self.dataSamplingRateEdit.setText(str(params['data_fs']))
         self.targetMaxEdit.setText(str(params['target_max']))
+        self.position.setText(params['position'])
 
     def load_plume_data(self):
         fname, suff = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", '', '*.mat')
@@ -216,6 +226,8 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         params['value_to_binarise'] = int(self.valuetobinariseEdit.text())
         params['bin_size'] = float(self.binsizeEdit.text())
         params['shatter_frequency'] = float(self.shatterEdit.text())
+        params['position'] = int(len(self.parentUi.children()) - 1)
+
         return params
 
     def set_parameters(self, params):
@@ -225,6 +237,7 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         self.valuetobinariseEdit.setText(str(params['value_to_binarise']))
         self.binsizeEdit.setText(str(params['bin_size']))
         self.shatterEdit.setText(str(params['shatter_frequency']))
+        self.position.setText(params['position'])
 
 
 
