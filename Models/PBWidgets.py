@@ -203,7 +203,7 @@ class AntiPlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
 
 
 class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
-    def __init__(self, position=0, parentUi=None):
+    def __init__(self, parentUi=None, position=0):
         super(self.__class__, self).__init__()
         self.setupUi(self)
 
