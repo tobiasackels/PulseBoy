@@ -226,6 +226,7 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         params['value_to_binarise'] = int(self.valuetobinariseEdit.text())
         params['bin_size'] = float(self.binsizeEdit.text())
         params['shatter_frequency'] = float(self.shatterEdit.text())
+        params['position'] = float(self.position.text())
 
         return params
 
@@ -236,6 +237,7 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         self.valuetobinariseEdit.setText(str(params['value_to_binarise']))
         self.binsizeEdit.setText(str(params['bin_size']))
         self.shatterEdit.setText(str(params['shatter_frequency']))
+        self.position.setText(str(params['position']))
         #self.position.setText(str(params['position']))
 
 
