@@ -127,9 +127,14 @@ class QueueController(QtCore.QObject):
             sleep(0.05)
             self.should_run = False
 
+    def run_from_selected(self, trial):
+        if not self.should_run:
+            self.should_run = True
+            self.experiment.current_trial = trial
+
+
     def finished(self):
         print("not implemented")
 
     def trigger_state(self):
         return self.trigger_control.isChecked()
-
