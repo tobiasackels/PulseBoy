@@ -203,12 +203,12 @@ class AntiPlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
 
 
 class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
-    def __init__(self, parentUi=None):
+    def __init__(self, position, parentUi=None):
         super(self.__class__, self).__init__()
         self.setupUi(self)
 
         self.parentUi = parentUi
-
+        self.position.setText(position)
         self.removeButton.clicked.connect(self.remove_from_parent)
 
     def remove_from_parent(self):
@@ -237,7 +237,7 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         self.valuetobinariseEdit.setText(str(params['value_to_binarise']))
         self.binsizeEdit.setText(str(params['bin_size']))
         self.shatterEdit.setText(str(params['shatter_frequency']))
-        self.position.setText(str(params['position']))
+        #self.position.setText(str(params['position']))
 
 
 
