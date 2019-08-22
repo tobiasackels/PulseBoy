@@ -5,7 +5,7 @@ from Designs import trialDesign, simpleValveDesign, noiseValveDesign, plumeValve
 
 # TODO - These widgets could inherit from a common PBWidget parent that implements remove_from_parent etc.
 class SimpleValveWidget(QtWidgets.QWidget, simpleValveDesign.Ui_Form):
-    def __init__(self, parentUi=None):
+    def __init__(self, parentUi=None, position=0):
         super(self.__class__, self).__init__()
         self.setupUi(self)
 
@@ -39,7 +39,7 @@ class SimpleValveWidget(QtWidgets.QWidget, simpleValveDesign.Ui_Form):
         params['shatter_duty'] = float(self.shatterDutyEdit.text())
         params['repeats'] = int(self.repeatsEdit.text())
         params['length'] = float(self.lengthEdit.text())
-        params['position'] = int(len(self.parentUi.children()) - 1)
+        params['position'] = int(self.position.text())
 
         return params
 
@@ -66,7 +66,7 @@ class SimpleValveWidget(QtWidgets.QWidget, simpleValveDesign.Ui_Form):
 
 
 class NoiseValveWidget(QtWidgets.QWidget, noiseValveDesign.Ui_Form):
-    def __init__(self, parentUi=None):
+    def __init__(self, parentUi=None, position=0):
         super(self.__class__, self).__init__()
         self.setupUi(self)
 
@@ -95,7 +95,7 @@ class NoiseValveWidget(QtWidgets.QWidget, noiseValveDesign.Ui_Form):
         params['repeats'] = int(self.repeatsEdit.text())
         params['length'] = float(self.lengthEdit.text())
         params['shatter_frequency'] = float(self.shatterHzEdit.text())
-        params['position'] = int(len(self.parentUi.children()) - 1)
+        params['position'] = int(self.position.text())
 
 
         return params
@@ -116,7 +116,7 @@ class NoiseValveWidget(QtWidgets.QWidget, noiseValveDesign.Ui_Form):
 
 
 class PlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
-    def __init__(self, parentUi=None):
+    def __init__(self, parentUi=None, position=0):
         super(self.__class__, self).__init__()
         self.setupUi(self)
 
@@ -140,7 +140,7 @@ class PlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
         params['data_fs'] = float(self.dataSamplingRateEdit.text())
         params['data_path'] = str(self.plumeDataLabel.text())
         params['target_max'] = float(self.targetMaxEdit.text())
-        params['position'] = int(len(self.parentUi.children()) - 1)
+        params['position'] = int(self.position.text())
 
 
         return params
@@ -160,7 +160,7 @@ class PlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
 
 
 class AntiPlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
-    def __init__(self, parentUi=None):
+    def __init__(self, parentUi=None, position=0):
         super(self.__class__, self).__init__()
         self.setupUi(self)
 
@@ -184,7 +184,7 @@ class AntiPlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
         params['data_fs'] = float(self.dataSamplingRateEdit.text())
         params['data_path'] = str(self.plumeDataLabel.text())
         params['target_max'] = float(self.targetMaxEdit.text())
-        params['position'] = int(len(self.parentUi.children()) - 1)
+        params['position'] = int(self.position.text())
 
         return params
 
@@ -226,7 +226,7 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         params['value_to_binarise'] = int(self.valuetobinariseEdit.text())
         params['bin_size'] = float(self.binsizeEdit.text())
         params['shatter_frequency'] = float(self.shatterEdit.text())
-        params['position'] = float(self.position.text())
+        params['position'] = int(self.position.text())
 
         return params
 
@@ -238,7 +238,6 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         self.binsizeEdit.setText(str(params['bin_size']))
         self.shatterEdit.setText(str(params['shatter_frequency']))
         self.position.setText(str(params['position']))
-        #self.position.setText(str(params['position']))
 
 
 
