@@ -62,7 +62,6 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
 
     def add_valve(self, v_type='Simple', params=None):
-        position = len(self.valveBankContents.children()) - 1
         if v_type == 'Simple':
             new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents)
         elif v_type == 'Noise':
