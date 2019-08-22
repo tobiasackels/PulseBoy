@@ -326,6 +326,19 @@
         <string>Experiment</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
+        <item row="4" column="0">
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="3" column="0">
          <widget class="QLineEdit" name="trialNameEdit">
           <property name="sizePolicy">
@@ -336,13 +349,6 @@
           </property>
           <property name="text">
            <string>Trial Name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QPushButton" name="startQueueButton">
-          <property name="text">
-           <string>Start Queue</string>
           </property>
          </widget>
         </item>
@@ -375,40 +381,6 @@
           </item>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QPushButton" name="addTrialButton">
-          <property name="text">
-           <string>Add To Trials</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="0">
-         <widget class="QPushButton" name="addValveButton">
-          <property name="text">
-           <string>Add Valve</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="updateTrialButton">
-          <property name="text">
-           <string>Update Trial</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="2">
          <widget class="QPushButton" name="removeTrialButton">
           <property name="text">
@@ -429,24 +401,10 @@
           </property>
          </spacer>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QPushButton" name="runSelectedButton">
           <property name="text">
            <string>Run Selected</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QPushButton" name="stopQueueButton">
-          <property name="text">
-           <string>Stop Queue</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QPushButton" name="pauseQueueButton">
-          <property name="text">
-           <string>Pause Queue</string>
           </property>
          </widget>
         </item>
@@ -457,6 +415,27 @@
           </property>
          </widget>
         </item>
+        <item row="6" column="0">
+         <widget class="QPushButton" name="startQueueButton">
+          <property name="text">
+           <string>Start Queue</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="addTrialButton">
+          <property name="text">
+           <string>Add To Trials</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="updateTrialButton">
+          <property name="text">
+           <string>Update Trial</string>
+          </property>
+         </widget>
+        </item>
         <item row="3" column="2">
          <widget class="QPushButton" name="moveDownButton">
           <property name="text">
@@ -464,17 +443,45 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
-         <widget class="QPushButton" name="randomiseTrialsButton">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="addValveButton">
           <property name="text">
-           <string>Randomise trials</string>
+           <string>Add Valve</string>
           </property>
          </widget>
         </item>
         <item row="6" column="2">
+         <widget class="QPushButton" name="stopQueueButton">
+          <property name="text">
+           <string>Stop Queue</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
          <widget class="QCheckBox" name="triggerWaitCheckBox">
           <property name="text">
            <string>Wait for trigger</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QPushButton" name="pauseQueueButton">
+          <property name="text">
+           <string>Pause Queue</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QPushButton" name="startQueueFromSelectedButton">
+          <property name="text">
+           <string>Start Queue from Selected</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QPushButton" name="randomiseTrialsButton">
+          <property name="text">
+           <string>Randomise trials</string>
           </property>
          </widget>
         </item>

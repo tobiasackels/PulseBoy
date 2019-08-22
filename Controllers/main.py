@@ -1,6 +1,6 @@
 import sys
 sys.path.append('C:\\Users\\warnert\\Documents\\GitHub')
-sys.path.append('C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy_updated\\PulseBoy')
+sys.path.append('C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy')
 from PyPulse import PulseInterface
 import numpy as np
 from PyQt5 import QtWidgets
@@ -62,18 +62,19 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
 
     def add_valve(self, v_type='Simple', params=None):
+        position = len(self.valveBankContents.children()) - 1
         if v_type == 'Simple':
-            new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents)
+            new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents, position)
         elif v_type == 'Noise':
-            new_valve = PBWidgets.NoiseValveWidget(self.valveBankContents)
+            new_valve = PBWidgets.NoiseValveWidget(self.valveBankContents, position)
         elif v_type == 'Plume':
-            new_valve = PBWidgets.PlumeValveWidget(self.valveBankContents)
+            new_valve = PBWidgets.PlumeValveWidget(self.valveBankContents, position)
         elif v_type == 'Anti Plume':
-            new_valve = PBWidgets.AntiPlumeValveWidget(self.valveBankContents)
+            new_valve = PBWidgets.AntiPlumeValveWidget(self.valveBankContents, position)
         elif v_type == 'Binary':
-            new_valve = PBWidgets.BinaryPlumeValveWidget(self.valveBankContents)
+            new_valve = PBWidgets.BinaryPlumeValveWidget(self.valveBankContents, position)
         else:
-            new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents)
+            new_valve = PBWidgets.SimpleValveWidget(self.valveBankContents, position)
 
         if params is not None:
             new_valve.set_parameters(params)
