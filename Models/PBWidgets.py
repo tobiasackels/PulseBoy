@@ -10,6 +10,7 @@ class SimpleValveWidget(QtWidgets.QWidget, simpleValveDesign.Ui_Form):
         self.setupUi(self)
 
         self.parentUi = parentUi
+        self.position.setText(str(position))
 
         self.removeButton.clicked.connect(self.remove_from_parent)
 
@@ -71,6 +72,7 @@ class NoiseValveWidget(QtWidgets.QWidget, noiseValveDesign.Ui_Form):
         self.setupUi(self)
 
         self.parentUi = parentUi
+        self.position.setText(str(position))
 
         self.removeButton.clicked.connect(self.remove_from_parent)
 
@@ -121,6 +123,7 @@ class PlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
         self.setupUi(self)
 
         self.parentUi = parentUi
+        self.position.setText(str(position))
 
         self.removeButton.clicked.connect(self.remove_from_parent)
         self.openPlumeDataButton.clicked.connect(self.load_plume_data)
@@ -165,6 +168,7 @@ class AntiPlumeValveWidget(QtWidgets.QWidget, plumeValveDesign.Ui_Form):
         self.setupUi(self)
 
         self.parentUi = parentUi
+        self.position.setText(str(position))
 
         self.removeButton.clicked.connect(self.remove_from_parent)
         self.openPlumeDataButton.clicked.connect(self.load_plume_data)
