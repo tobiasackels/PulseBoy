@@ -85,6 +85,8 @@ class ExperimentModel(QtCore.QAbstractTableModel):
                     for index, j in enumerate(i[1]):
                         if 'position' not in j:
                             j['position'] = index
+                for i in arraydata[0][1]:
+                    print(i['position'])
             self.arraydata = arraydata
             self.layoutChanged.emit()
         except:
