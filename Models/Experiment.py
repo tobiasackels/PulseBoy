@@ -81,7 +81,10 @@ class ExperimentModel(QtCore.QAbstractTableModel):
         try:
             with open(file_conf, 'rb') as fn:
                 arraydata = pickle.load(fn)
-
+                for i in arraydata:
+                    for index, j in enumerate(i[1]):
+                        if 'position' not in j:
+                            j['position'] = index
             self.arraydata = arraydata
             self.layoutChanged.emit()
         except:
