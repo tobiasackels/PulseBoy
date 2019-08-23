@@ -123,6 +123,13 @@
      </property>
     </widget>
    </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="position">
+     <property name="text">
+      <string>1</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

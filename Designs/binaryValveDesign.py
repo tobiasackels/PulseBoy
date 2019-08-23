@@ -66,6 +66,9 @@ class Ui_Form(object):
         self.numofbinsEdit = QtWidgets.QLineEdit(Form)
         self.numofbinsEdit.setObjectName("numofbinsEdit")
         self.gridLayout.addWidget(self.numofbinsEdit, 1, 3, 1, 1)
+        self.position = QtWidgets.QLabel(Form)
+        self.position.setObjectName("position")
+        self.gridLayout.addWidget(self.position, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -86,4 +89,5 @@ class Ui_Form(object):
         self.label_4.setText(_translate("Form", "Number of bins"))
         self.label_5.setText(_translate("Form", "Bin size"))
         self.numofbinsEdit.setText(_translate("Form", "8"))
+        self.position.setText(_translate("Form", "1"))
 
