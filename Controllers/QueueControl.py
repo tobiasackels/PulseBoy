@@ -4,6 +4,7 @@ import daqface.DAQ as daq
 from PyPulse import PulseInterface
 import scipy.io as sio
 import numpy as np
+from datetime import datetime
 
 
 class QueueWorker(QtCore.QObject):
@@ -77,17 +78,23 @@ class QueueWorker(QtCore.QObject):
                     self.experiment.reset_trials()
                     if export_params['save_names']:
                         names = [i[-1] for i in self.experiment.arraydata]
-                        f = open(export_params['export_path']+export_params['trial_suffix']+'.txt', 'w')
+                        date = datetime.today().strftime('%Y-%m-%d')
+                        time = datetime.today().strftime('%H:%M:%S')
+                        f = open(export_params['export_path']+date+export_params['trial_suffix']+'.txt', 'a')
+                        f.write(time)
+                        f.write('\n')
                         f.write('\n'.join(names))
+                        f.write('\n')
                         f.close()
-                    global_params['repeats_done'] += 1
-                    if global_params['repeats_done'] == global_params['repeats']:
+                    self.parent.repeats_done += 1
+                    if self.parent.repeats_done == global_params['repeats']:
                         self.parent.should_run = False
+                        self.parent.repeats_done = 0
                     else:
                         if global_params['shuffle_repeats']:
                             self.experiment.randomise_trials()
 
-                if self.parent.should_run:
+                elif self.parent.should_run:
                     self.experiment.advance_trial()
 
 
@@ -104,6 +111,7 @@ class QueueController(QtCore.QObject):
         self.get_hardware_params = get_hardware_params
         self.get_export_params = get_export_params
         self.prepare_thread()
+        self.repeats_done = 0
 
         self.should_run = False
         self.trigger_control = trigger_control
@@ -119,7 +127,7 @@ class QueueController(QtCore.QObject):
         self.thread.start()
 
     def start(self):
-        params['']
+
         if not self.should_run:
             self.should_run = True
 
@@ -133,6 +141,8 @@ class QueueController(QtCore.QObject):
             self.should_run = False
 
         self.experiment.reset_trials()
+        self.repeats_done = 0
+
 
     def run_selected(self, trial):
         if not self.should_run:

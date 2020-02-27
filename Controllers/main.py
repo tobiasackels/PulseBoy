@@ -231,7 +231,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         params['global_onset'] = float(self.globalOnsetEdit.text())
         params['global_offset'] = float(self.globalOffsetEdit.text())
         params['repeats'] = float(self.repeatsBox.text())
-        params['repeats_done'] = 0
+        #params['repeats_done'] = 0
         params['shuffle_repeats'] = bool(self.shuffleRepeatsBox.isChecked())
 
         return params
