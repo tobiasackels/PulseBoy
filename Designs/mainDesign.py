@@ -246,9 +246,9 @@ class Ui_MainWindow(object):
         self.repeatsBox.setObjectName("repeatsBox")
         self.horizontalLayout.addWidget(self.repeatsBox)
         self.gridLayout_4.addLayout(self.horizontalLayout, 7, 1, 1, 1)
-        self.checkBox = QtWidgets.QCheckBox(self.experimentSetupTab)
-        self.checkBox.setObjectName("checkBox")
-        self.gridLayout_4.addWidget(self.checkBox, 7, 2, 1, 1)
+        self.shuffleRepeatsBox = QtWidgets.QCheckBox(self.experimentSetupTab)
+        self.shuffleRepeatsBox.setObjectName("shuffleRepeatsBox")
+        self.gridLayout_4.addWidget(self.shuffleRepeatsBox, 7, 2, 1, 1)
         self.setupTabs.addTab(self.experimentSetupTab, "")
         self.dataExportTab = QtWidgets.QWidget()
         self.dataExportTab.setObjectName("dataExportTab")
@@ -322,7 +322,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.viewWidgetTab.setCurrentIndex(0)
-        self.setupTabs.setCurrentIndex(3)
+        self.setupTabs.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -372,7 +372,7 @@ class Ui_MainWindow(object):
         self.valveTypeCombo.setItemText(3, _translate("MainWindow", "Noise"))
         self.valveTypeCombo.setItemText(4, _translate("MainWindow", "Plume"))
         self.label_10.setText(_translate("MainWindow", "Repeats"))
-        self.checkBox.setText(_translate("MainWindow", "Shuffle repeats"))
+        self.shuffleRepeatsBox.setText(_translate("MainWindow", "Shuffle repeats"))
         self.setupTabs.setTabText(self.setupTabs.indexOf(self.experimentSetupTab), _translate("MainWindow", "Experiment"))
         self.trialNameCheckBox.setText(_translate("MainWindow", "Save trial names"))
         self.pulseCheckBox.setText(_translate("MainWindow", "Save pulses"))

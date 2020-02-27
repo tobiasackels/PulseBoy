@@ -74,13 +74,18 @@ class QueueWorker(QtCore.QObject):
 
 
                 if self.experiment.total_trials() - self.experiment.current_trial == 1:
-                    self.parent.should_run = False
                     self.experiment.reset_trials()
                     if export_params['save_names']:
                         names = [i[-1] for i in self.experiment.arraydata]
                         f = open(export_params['export_path']+export_params['trial_suffix']+'.txt', 'w')
                         f.write('\n'.join(names))
                         f.close()
+                    global_params['repeats_done'] += 1
+                    if global_params['repeats_done'] == global_params['repeats']:
+                        self.parent.should_run = False
+                    else:
+                        if global_params['shuffle_repeats']:
+                            self.experiment.randomise_trials()
 
                 if self.parent.should_run:
                     self.experiment.advance_trial()
@@ -114,6 +119,7 @@ class QueueController(QtCore.QObject):
         self.thread.start()
 
     def start(self):
+        params['']
         if not self.should_run:
             self.should_run = True
 

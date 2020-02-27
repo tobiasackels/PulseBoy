@@ -153,7 +153,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="hardwareTab">
        <attribute name="title">
@@ -504,7 +504,7 @@
          </layout>
         </item>
         <item row="7" column="2">
-         <widget class="QCheckBox" name="checkBox">
+         <widget class="QCheckBox" name="shuffleRepeatsBox">
           <property name="text">
            <string>Shuffle repeats</string>
           </property>

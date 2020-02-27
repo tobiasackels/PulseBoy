@@ -1,6 +1,8 @@
 import sys
 sys.path.append('C:\\Users\\warnert\\Documents\\GitHub')
 sys.path.append('C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy_updated\\PulseBoy')
+sys.path.append('C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy')
+
 from PyPulse import PulseInterface
 import numpy as np
 from PyQt5 import QtWidgets
@@ -228,6 +230,9 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         params = dict()
         params['global_onset'] = float(self.globalOnsetEdit.text())
         params['global_offset'] = float(self.globalOffsetEdit.text())
+        params['repeats'] = float(self.repeatsBox.text())
+        params['repeats_done'] = 0
+        params['shuffle_repeats'] = bool(self.shuffleRepeatsBox.isChecked())
 
         return params
 
