@@ -233,8 +233,11 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
     def get_export_params(self):
         params = dict()
+        params['save_names'] = bool(self.trialNameCheckBox.isChecked())
+        params['save_pulses'] = bool(self.pulseCheckBox.isChecked())
         params['export_path'] = str(self.exportPathEdit.text())
-        params['export_suffix'] = str(self.exportSuffixEdit.text())
+        params['pulse_suffix'] = str(self.pulseSuffixEdit.text())
+        params['trial_suffix'] = str(self.trialNameSuffixEdit.text())
 
         return params
 

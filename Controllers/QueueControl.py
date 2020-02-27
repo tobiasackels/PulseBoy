@@ -67,9 +67,11 @@ class QueueWorker(QtCore.QObject):
                         self.analog_data = []
 
                 # Save data
-                save_string = export_params['export_path'] + str(self.experiment.current_trial) + \
-                              export_params['export_suffix'] + '.mat'
-                sio.savemat(save_string, {'analog_data': self.analog_data, 'pulses': pulses, 't': t})
+                if export_params['save_pulses']:
+                    save_string = export_params['export_path'] + str(self.experiment.current_trial) + \
+                                  export_params['pulse_suffix'] + '.mat'
+                    sio.savemat(save_string, {'analog_data': self.analog_data, 'pulses': pulses, 't': t})
+
 
                 if self.experiment.total_trials() - self.experiment.current_trial == 1:
                     self.parent.should_run = False
@@ -78,6 +80,7 @@ class QueueWorker(QtCore.QObject):
                 if self.parent.should_run:
                     self.experiment.advance_trial()
 
+                print('finished')
                 self.finished.emit()
 
 
