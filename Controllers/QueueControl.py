@@ -87,6 +87,7 @@ class QueueWorker(QtCore.QObject):
                         f.write('\n')
                         f.close()
                     self.parent.repeats_done += 1
+                    print('repeats done ', self.parent.repeats_done)
                     if self.parent.repeats_done == global_params['repeats']:
                         self.parent.should_run = False
                         self.parent.repeats_done = 0
