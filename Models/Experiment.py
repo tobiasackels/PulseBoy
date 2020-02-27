@@ -101,6 +101,16 @@ class ExperimentModel(QtCore.QAbstractTableModel):
             print("save failed")
             pass
 
+    def save_trial_names(self, file_conf):
+        try:
+            with open(file_conf[0] + file_conf[1], 'wb') as fn:
+                for i in self.arraydata:
+                    fn.write(i)
+                    fn.close()
+        except:
+            print('save failed')
+            pass
+
     def advance_trial(self):
         self.current_trial += 1
 
