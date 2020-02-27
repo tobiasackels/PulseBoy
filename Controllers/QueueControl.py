@@ -76,11 +76,16 @@ class QueueWorker(QtCore.QObject):
                 if self.experiment.total_trials() - self.experiment.current_trial == 1:
                     self.parent.should_run = False
                     self.experiment.reset_trials()
+                    if export_params['save_names']:
+                        names = [i[-1] for i in self.experiment.arraydata]
+                        f = open(export_params['export_path']+export_params['trial_suffix']+'.txt', 'w')
+                        f.write('\n'.join(names))
+                        f.close()
 
                 if self.parent.should_run:
                     self.experiment.advance_trial()
 
-                print('finished')
+
                 self.finished.emit()
 
 
