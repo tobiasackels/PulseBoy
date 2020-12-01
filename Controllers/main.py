@@ -8,8 +8,10 @@ import numpy as np
 from PyQt5 import QtWidgets
 import Models.Experiment as Experiment
 from Controllers import QueueControl, QueueControl
+from multiprocessing import Queue, Process
 from Designs import mainDesign
 from Models import PBWidgets
+from vipy import StreamNSave
 import pickle as pickle
 import os.path
 
@@ -62,7 +64,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.pauseQueueButton.clicked.connect(self.queue_controller.pause)
         self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
         self.startQueueFromSelectedButton.clicked.connect(lambda x: self.queue_controller.run_from_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
-
+        
     def add_valve(self, v_type='Simple', params=None):
         position = len(self.valveBankContents.children()) - 1
         if v_type == 'Simple':
@@ -249,6 +251,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
     def set_export_path(self):
         path = QtWidgets.QFileDialog.getExistingDirectory(self, "Choose Export Path")
         self.exportPathEdit.setText(path + '/')
+    
+
 
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
