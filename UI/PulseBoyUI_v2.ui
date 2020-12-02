@@ -786,7 +786,7 @@
          </widget>
         </item>
         <item row="8" column="0">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="closeCamerasButton">
           <property name="text">
            <string>Close cameras(s)</string>
           </property>

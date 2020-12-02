@@ -8,7 +8,7 @@ import numpy as np
 from PyQt5 import QtWidgets
 import Models.Experiment as Experiment
 from Controllers import QueueControl, QueueControl
-from multiprocessing import Queue, Process
+from multiprocessing import Queue, Process, Manager
 from Designs import mainDesign
 from Models import PBWidgets
 from vipy import StreamNSave
@@ -64,7 +64,15 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.pauseQueueButton.clicked.connect(self.queue_controller.pause)
         self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
         self.startQueueFromSelectedButton.clicked.connect(lambda x: self.queue_controller.run_from_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
-        
+
+        ## Camera code
+        camera_params = Manager().dict()
+        self.cameraParams = camera_params
+        self.launchCameraButton.clicked.connect(self.startStream)
+
+        self.get_camera_params()
+        self.closeCamerasButton.clicked.connect(self.terminateCameraStream)
+
     def add_valve(self, v_type='Simple', params=None):
         position = len(self.valveBankContents.children()) - 1
         if v_type == 'Simple':
@@ -253,7 +261,23 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.exportPathEdit.setText(path + '/')
     
 
+    def startStream(self):
+        self.get_camera_params()
 
+        self.cameraProcess = Process(target=StreamNSave.stream_and_save, 
+                                     args=(self.cameraParams,))
+    def terminateCameraStream(self):
+        self.cameraProcess.terminate()
+
+    def get_camera_params(self):
+        self.cameraParams['saveStream'] = bool(self.saveCameraVideocheckBox.isChecked())
+        self.cameraParams['showStream'] = bool(self.showStreamcheckBox.isChecked())
+        self.cameraParams['outDir'] = str(self.exportPathEdit.text())
+        self.cameraParams['cams'] = int(self.numberCamerasEdit.text())
+        self.cameraParams['camera_suffix'] = str(self.cameraSuffixEdit.text())
+        self.cameraParams['inter_stream_interval'] = float(self.cameraSaveIntervalEdit.text())
+        self.cameraParams['recording_ind'] = bool(self.cameraSaveIconBox.isChecked())
+    
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
 
