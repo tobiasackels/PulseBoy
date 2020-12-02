@@ -72,6 +72,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
         self.get_camera_params()
         self.closeCamerasButton.clicked.connect(self.terminateCameraStream)
+        self.updateCamerasButton.clicked.connect(self.get_camera_params)
 
     def add_valve(self, v_type='Simple', params=None):
         position = len(self.valveBankContents.children()) - 1
@@ -263,21 +264,24 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
 
     def startStream(self):
         self.get_camera_params()
-
+        self.cameraParams['runStream'] = True
         self.cameraProcess = Process(target=StreamNSave.stream_and_save, 
                                      args=(self.cameraParams,))
+        self.cameraProcess.daemon = True
+        self.cameraProcess.start()
     def terminateCameraStream(self):
-        self.cameraProcess.terminate()
+        self.cameraParams['runStream'] = False
+        #self.cameraProcess.terminate()
 
     def get_camera_params(self):
         self.cameraParams['saveStream'] = bool(self.saveCameraVideocheckBox.isChecked())
         self.cameraParams['showStream'] = bool(self.showStreamcheckBox.isChecked())
         self.cameraParams['outDir'] = str(self.exportPathEdit.text())
         self.cameraParams['cams'] = int(self.numberCamerasEdit.text())
-        self.cameraParams['camera_suffix'] = str(self.cameraSuffixEdit.text())
+        self.cameraParams['cameraSuffix'] = str(self.cameraSuffixEdit.text())
         self.cameraParams['inter_stream_interval'] = float(self.cameraSaveIntervalEdit.text())
         self.cameraParams['recording_ind'] = bool(self.cameraSaveIconBox.isChecked())
-    
+
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
 

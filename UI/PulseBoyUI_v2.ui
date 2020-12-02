@@ -153,7 +153,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="hardwareTab">
        <attribute name="title">
@@ -789,6 +789,13 @@
          <widget class="QPushButton" name="closeCamerasButton">
           <property name="text">
            <string>Close cameras(s)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QPushButton" name="updateCamerasButton">
+          <property name="text">
+           <string>Update camera(s)</string>
           </property>
          </widget>
         </item>
