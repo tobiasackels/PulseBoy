@@ -30,11 +30,13 @@ class QueueWorker(QtCore.QObject):
                 hardware_params = self.get_hardware_params()
                 global_params = self.get_global_params()
                 export_params = self.get_export_params()
-
+                invert_valves = []
+                if global_params['inverted_blank_off_state']:
+                    invert_valves = global_params['inverted_blank_valves']
                 pulses, t = PulseInterface.make_pulse(hardware_params['samp_rate'],
                                                       global_params['global_onset'],
                                                       global_params['global_offset'],
-                                                      trial_params)
+                                                      trial_params, invert_chan_list=invert_valves)
 
                 # in standard configuration we want to run each trial sequentially
                 if not self.parent.trigger_state():
