@@ -152,7 +152,10 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         trial_params = self.trialBankModel.arraydata[selected_trial][1]
         invert_valves = []
         if self.invertBlankcheckBox.isChecked():
-            invert_valves = [int(i) for i in self.blankValveEdit.text().split(',')]
+            try:
+                invert_valves = [int(i) for i in self.blankValveEdit.text().split(',')]
+            except ValueError:
+                print('Unable to invert channels, did not understand input "%s' % self.blankValveEdit.text())
         
         pulses, t = PulseInterface.make_pulse(float(self.sampRateEdit.text()),
                                               float(self.globalOnsetEdit.text()),
