@@ -150,10 +150,13 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             selected_trial = 0
 
         trial_params = self.trialBankModel.arraydata[selected_trial][1]
-
+        invert_valves = []
+        if self.invertBlankcheckBox.isChecked():
+            invert_valves = [int(i) for i in self.blankValveEdit.text().split(',')]
+        
         pulses, t = PulseInterface.make_pulse(float(self.sampRateEdit.text()),
                                               float(self.globalOnsetEdit.text()),
-                                              float(self.globalOffsetEdit.text()), trial_params)
+                                              float(self.globalOffsetEdit.text()), trial_params, invert_chan_list=invert_valves)
 
         self.graphicsView.plotItem.clear()
         for p, pulse in enumerate(pulses):
@@ -244,6 +247,11 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         params['repeats'] = float(self.repeatsBox.text())
         #params['repeats_done'] = 0
         params['shuffle_repeats'] = bool(self.shuffleRepeatsBox.isChecked())
+        params['inverted_blank_off_state'] = bool(self.invertBlankcheckBox.isChecked())
+        if params['inverted_blank_off_state']:
+            params['inverted_blank_valves'] = [int(i) for i in self.blankValveEdit.text().split(',')]
+        else:
+            params['inverted_blank_valves'] = None
 
         return params
 
