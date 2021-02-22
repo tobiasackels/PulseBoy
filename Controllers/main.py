@@ -14,6 +14,7 @@ from Models import PBWidgets
 from vipy import StreamNSave
 import pickle as pickle
 import os.path
+import daqface.DAQ as daq
 
 
 # noinspection PyBroadException
@@ -73,6 +74,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.get_camera_params()
         self.closeCamerasButton.clicked.connect(self.terminateCameraStream)
         self.updateCamerasButton.clicked.connect(self.get_camera_params)
+        self.resetValveButton.clicked.connect(self.reset_all_chans())
+
 
     def add_valve(self, v_type='Simple', params=None):
         position = len(self.valveBankContents.children()) - 1
@@ -92,6 +95,9 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         if params is not None:
             new_valve.set_parameters(params)
         self.valveBankContents.layout().addWidget(new_valve)
+
+    def reset_all_chans(self):
+        daq.closeValves(self.get_hardware_params()['digital_dev'])
 
     def add_trial(self):
         n_valves = 0
@@ -292,6 +298,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.cameraParams['cameraSuffix'] = str(self.cameraSuffixEdit.text())
         self.cameraParams['inter_stream_interval'] = float(self.cameraSaveIntervalEdit.text())
         self.cameraParams['recording_ind'] = bool(self.cameraSaveIconBox.isChecked())
+
+    def reset_all_valves():
 
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook
