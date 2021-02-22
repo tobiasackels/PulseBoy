@@ -51,6 +51,9 @@ class QueueWorker(QtCore.QObject):
                         self.trial_daq = daq.DoCoTask(hardware_params['digital_dev'], '', hardware_params['samp_rate'],
                                                       len(t) / hardware_params['samp_rate'], pulses)
                         self.trial_daq.DoTask()
+                        close_valves= daq.DoCoTask(hardware_params['digital_dev'], '', hardware_params['samp_rate'],
+                                                      len(t) / hardware_params['samp_rate'], np.zeros((len(pulses), 10)))
+                        close_valves.DoTask()
                         self.analog_data = []
                 # unless the 'wait for trigger' box is checked, in which case we want to wait for our trigger in
                 else:
