@@ -258,6 +258,9 @@ class Ui_MainWindow(object):
         self.shuffleRepeatsBox = QtWidgets.QCheckBox(self.experimentSetupTab)
         self.shuffleRepeatsBox.setObjectName("shuffleRepeatsBox")
         self.gridLayout_4.addWidget(self.shuffleRepeatsBox, 7, 2, 1, 1)
+        self.closeValvesButton = QtWidgets.QPushButton(self.experimentSetupTab)
+        self.closeValvesButton.setObjectName("closeValvesButton")
+        self.gridLayout_4.addWidget(self.closeValvesButton, 0, 2, 1, 1)
         self.setupTabs.addTab(self.experimentSetupTab, "")
         self.dataExportTab = QtWidgets.QWidget()
         self.dataExportTab.setObjectName("dataExportTab")
@@ -403,7 +406,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.viewWidgetTab.setCurrentIndex(0)
-        self.setupTabs.setCurrentIndex(1)
+        self.setupTabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -456,6 +459,7 @@ class Ui_MainWindow(object):
         self.valveTypeCombo.setItemText(4, _translate("MainWindow", "Plume"))
         self.label_10.setText(_translate("MainWindow", "Repeats"))
         self.shuffleRepeatsBox.setText(_translate("MainWindow", "Shuffle repeats"))
+        self.closeValvesButton.setText(_translate("MainWindow", "Close all valves"))
         self.setupTabs.setTabText(self.setupTabs.indexOf(self.experimentSetupTab), _translate("MainWindow", "Experiment"))
         self.label_18.setText(_translate("MainWindow", "Time suffix"))
         self.label_15.setText(_translate("MainWindow", "Camera suffix"))
