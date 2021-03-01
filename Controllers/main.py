@@ -77,7 +77,7 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.get_camera_params()
         self.closeCamerasButton.clicked.connect(self.terminateCameraStream)
         self.updateCamerasButton.clicked.connect(self.get_camera_params)
-        self.closeValveButton.clicked.connect(self.reset_all_chans())
+        self.closeValvesButton.clicked.connect(self.reset_all_chans)
 
 
     def add_valve(self, v_type='Simple', params=None):
