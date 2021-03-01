@@ -14,7 +14,7 @@ from Models import PBWidgets
 try:
     from vipulse import StreamNSave
 except ImportError:
-    pass
+    print('No camera!')
 import pickle as pickle
 import os.path
 import daqface.DAQ as daq
