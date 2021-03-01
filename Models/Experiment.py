@@ -127,6 +127,8 @@ class ExperimentModel(QtCore.QAbstractTableModel):
         shuffle_group_size = global_params['shuffle_group_size']
         out_shuffle = list(self.arraydata[:shuffle_offset])
         shuffle_indexes = np.arange((math.ceil(len(self.arraydata)-shuffle_offset)/shuffle_group_size))*shuffle_group_size+shuffle_offset
+        random.shuffle(shuffle_indexes)
         for i in shuffle_indexes:
-            out_shuffle.append(self.arraydata[i])
+            for j in range(shuffle_group_size):
+                out_shuffle.append(self.arraydata[int(i+j)])
         self.arraydata = out_shuffle
