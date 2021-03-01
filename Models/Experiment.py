@@ -1,6 +1,8 @@
 from PyQt5 import QtCore, QtGui
 import pickle as pickle
 import random
+import numpy as np
+import math
 
 default_row = [[0, [], '']]
 
@@ -120,5 +122,11 @@ class ExperimentModel(QtCore.QAbstractTableModel):
     def total_trials(self):
         return len(self.arraydata)
 
-    def randomise_trials(self):
-        random.shuffle(self.arraydata)
+    def randomise_trials(self, global_params):
+        shuffle_offset = global_params['shuffle_offset']
+        shuffle_group_size = global_params['shuffle_group_size']
+        out_shuffle = list(self.arraydata[:shuffle_offset])
+        shuffle_indexes = np.arange((math.ceil(len(self.arraydata)-shuffle_offset)/shuffle_group_size))*shuffle_group_size+shuffle_offset
+        for i in shuffle_indexes:
+            out_shuffle.append(self.arraydata[i])
+        self.arraydata = out_shuffle

@@ -11,7 +11,10 @@ from Controllers import QueueControl, QueueControl
 from multiprocessing import Queue, Process, Manager
 from Designs import mainDesign
 from Models import PBWidgets
-from vipy import StreamNSave
+try:
+    from vipulse import StreamNSave
+except ImportError:
+    pass
 import pickle as pickle
 import os.path
 import daqface.DAQ as daq
@@ -147,7 +150,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             self.select_trial(idx + 1)
 
     def randomise_trials(self):
-        self.trialBankModel.randomise_trials()
+        glob_params = self.get_global_params()
+        self.trialBankModel.randomise_trials(glob_params)
 
     def trial_selected(self):
         try:
@@ -262,6 +266,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         else:
             params['inverted_blank_valves'] = None
 
+        params['shuffle_offset'] = int(self.shuffleOffsetlineEdit.text())
+        params['shuffle_group_size'] = int(self.shuffleGrouplineEdit.text())
         return params
 
     def get_export_params(self):
