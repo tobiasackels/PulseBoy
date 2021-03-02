@@ -1,15 +1,23 @@
 import sys
 sys.path.append('C:\\Users\\warnert\\Documents\\GitHub')
+sys.path.append('C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy_updated\\PulseBoy')
 sys.path.append('C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy')
+
 from PyPulse import PulseInterface
 import numpy as np
 from PyQt5 import QtWidgets
 import Models.Experiment as Experiment
 from Controllers import QueueControl, QueueControl
+from multiprocessing import Queue, Process, Manager
 from Designs import mainDesign
 from Models import PBWidgets
+try:
+    from vipulse import StreamNSave
+except ImportError:
+    print('No camera!')
 import pickle as pickle
 import os.path
+import daqface.DAQ as daq
 
 
 # noinspection PyBroadException
@@ -61,6 +69,17 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         self.runSelectedButton.clicked.connect(lambda x: self.queue_controller.run_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
         self.startQueueFromSelectedButton.clicked.connect(lambda x: self.queue_controller.run_from_selected(self.trialBankTable.selectionModel().selectedRows()[0].row()))
 
+        ## Camera code
+        camera_params = Manager().dict()
+        self.cameraParams = camera_params
+        self.launchCameraButton.clicked.connect(self.startStream)
+
+        self.get_camera_params()
+        self.closeCamerasButton.clicked.connect(self.terminateCameraStream)
+        self.updateCamerasButton.clicked.connect(self.get_camera_params)
+        self.closeValvesButton.clicked.connect(self.reset_all_chans)
+
+
     def add_valve(self, v_type='Simple', params=None):
         position = len(self.valveBankContents.children()) - 1
         if v_type == 'Simple':
@@ -79,6 +98,9 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         if params is not None:
             new_valve.set_parameters(params)
         self.valveBankContents.layout().addWidget(new_valve)
+
+    def reset_all_chans(self):
+        daq.closeValves(self.get_hardware_params()['digital_dev'])
 
     def add_trial(self):
         n_valves = 0
@@ -128,7 +150,8 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             self.select_trial(idx + 1)
 
     def randomise_trials(self):
-        self.trialBankModel.randomise_trials()
+        glob_params = self.get_global_params()
+        self.trialBankModel.randomise_trials(glob_params)
 
     def trial_selected(self):
         try:
@@ -137,10 +160,16 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
             selected_trial = 0
 
         trial_params = self.trialBankModel.arraydata[selected_trial][1]
-
+        invert_valves = []
+        if self.invertBlankcheckBox.isChecked():
+            try:
+                invert_valves = [int(i) for i in self.blankValveEdit.text().split(',')]
+            except ValueError:
+                print('Unable to invert channels, did not understand input "%s' % self.blankValveEdit.text())
+        
         pulses, t = PulseInterface.make_pulse(float(self.sampRateEdit.text()),
                                               float(self.globalOnsetEdit.text()),
-                                              float(self.globalOffsetEdit.text()), trial_params)
+                                              float(self.globalOffsetEdit.text()), trial_params, invert_chan_list=invert_valves)
 
         self.graphicsView.plotItem.clear()
         for p, pulse in enumerate(pulses):
@@ -228,19 +257,54 @@ class MainApp(QtWidgets.QMainWindow, mainDesign.Ui_MainWindow):
         params = dict()
         params['global_onset'] = float(self.globalOnsetEdit.text())
         params['global_offset'] = float(self.globalOffsetEdit.text())
+        params['repeats'] = float(self.repeatsBox.text())
+        #params['repeats_done'] = 0
+        params['shuffle_repeats'] = bool(self.shuffleRepeatsBox.isChecked())
+        params['inverted_blank_off_state'] = bool(self.invertBlankcheckBox.isChecked())
+        if params['inverted_blank_off_state']:
+            params['inverted_blank_valves'] = [int(i) for i in self.blankValveEdit.text().split(',')]
+        else:
+            params['inverted_blank_valves'] = None
 
+        params['shuffle_offset'] = int(self.shuffleOffsetlineEdit.text())
+        params['shuffle_group_size'] = int(self.shuffleGrouplineEdit.text())
         return params
 
     def get_export_params(self):
         params = dict()
+        params['save_names'] = bool(self.trialNameCheckBox.isChecked())
+        params['save_pulses'] = bool(self.pulseCheckBox.isChecked())
         params['export_path'] = str(self.exportPathEdit.text())
-        params['export_suffix'] = str(self.exportSuffixEdit.text())
+        params['pulse_suffix'] = str(self.pulseSuffixEdit.text())
+        params['trial_suffix'] = str(self.trialNameSuffixEdit.text())
 
         return params
 
     def set_export_path(self):
         path = QtWidgets.QFileDialog.getExistingDirectory(self, "Choose Export Path")
         self.exportPathEdit.setText(path + '/')
+    
+
+    def startStream(self):
+        self.get_camera_params()
+        self.cameraParams['runStream'] = True
+        self.cameraProcess = Process(target=StreamNSave.stream_and_save, 
+                                     args=(self.cameraParams,))
+        self.cameraProcess.daemon = True
+        self.cameraProcess.start()
+    def terminateCameraStream(self):
+        self.cameraParams['runStream'] = False
+        #self.cameraProcess.terminate()
+
+    def get_camera_params(self):
+        self.cameraParams['saveStream'] = bool(self.saveCameraVideocheckBox.isChecked())
+        self.cameraParams['showStream'] = bool(self.showStreamcheckBox.isChecked())
+        self.cameraParams['outDir'] = str(self.exportPathEdit.text())
+        self.cameraParams['cams'] = int(self.numberCamerasEdit.text())
+        self.cameraParams['cameraSuffix'] = str(self.cameraSuffixEdit.text())
+        self.cameraParams['inter_stream_interval'] = float(self.cameraSaveIntervalEdit.text())
+        self.cameraParams['recording_ind'] = bool(self.cameraSaveIconBox.isChecked())
+
 
 # Back up the reference to the exceptionhook
 sys._excepthook = sys.excepthook

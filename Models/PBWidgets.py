@@ -244,6 +244,7 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         self.binsizeEdit.setText(str(params['bin_size']))
         self.shatterEdit.setText(str(params['shatter_frequency']))
         self.position.setText(str(params['position']))
+        self.shatterDutyEdit.setText(str(params['shatter_duty']))
 
 
 

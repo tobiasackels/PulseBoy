@@ -4,6 +4,7 @@ import daqface.DAQ as daq
 from PyPulse import PulseInterface
 import scipy.io as sio
 import numpy as np
+from datetime import datetime
 
 
 class QueueWorker(QtCore.QObject):
@@ -29,11 +30,13 @@ class QueueWorker(QtCore.QObject):
                 hardware_params = self.get_hardware_params()
                 global_params = self.get_global_params()
                 export_params = self.get_export_params()
-
+                invert_valves = []
+                if global_params['inverted_blank_off_state']:
+                    invert_valves = global_params['inverted_blank_valves']
                 pulses, t = PulseInterface.make_pulse(hardware_params['samp_rate'],
                                                       global_params['global_onset'],
                                                       global_params['global_offset'],
-                                                      trial_params)
+                                                      trial_params, invert_chan_list=invert_valves)
 
                 # in standard configuration we want to run each trial sequentially
                 if not self.parent.trigger_state():
@@ -48,6 +51,9 @@ class QueueWorker(QtCore.QObject):
                         self.trial_daq = daq.DoCoTask(hardware_params['digital_dev'], '', hardware_params['samp_rate'],
                                                       len(t) / hardware_params['samp_rate'], pulses)
                         self.trial_daq.DoTask()
+                        close_valves= daq.DoCoTask(hardware_params['digital_dev'], '', hardware_params['samp_rate'],
+                                                      len(t) / hardware_params['samp_rate'], np.zeros((len(pulses), 10)))
+                        close_valves.DoTask()
                         self.analog_data = []
                 # unless the 'wait for trigger' box is checked, in which case we want to wait for our trigger in
                 else:
@@ -67,16 +73,36 @@ class QueueWorker(QtCore.QObject):
                         self.analog_data = []
 
                 # Save data
-                save_string = export_params['export_path'] + str(self.experiment.current_trial) + \
-                              export_params['export_suffix'] + '.mat'
-                sio.savemat(save_string, {'analog_data': self.analog_data, 'pulses': pulses, 't': t})
+                if export_params['save_pulses']:
+                    save_string = export_params['export_path'] + str(self.experiment.current_trial) + \
+                                  export_params['pulse_suffix'] + '.mat'
+                    sio.savemat(save_string, {'analog_data': self.analog_data, 'pulses': pulses, 't': t})
+
 
                 if self.experiment.total_trials() - self.experiment.current_trial == 1:
-                    self.parent.should_run = False
                     self.experiment.reset_trials()
+                    if export_params['save_names']:
+                        names = [i[-1] for i in self.experiment.arraydata]
+                        date = datetime.today().strftime('%Y-%m-%d')
+                        time = datetime.today().strftime('%H:%M:%S')
+                        f = open(export_params['export_path']+date+export_params['trial_suffix']+'.txt', 'a')
+                        f.write(time)
+                        f.write('\n')
+                        f.write('\n'.join(names))
+                        f.write('\n')
+                        f.close()
+                    self.parent.repeats_done += 1
+                    print('repeats done ', self.parent.repeats_done)
+                    if self.parent.repeats_done == global_params['repeats']:
+                        self.parent.should_run = False
+                        self.parent.repeats_done = 0
+                    else:
+                        if global_params['shuffle_repeats']:
+                            self.experiment.randomise_trials(global_params)
 
-                if self.parent.should_run:
+                elif self.parent.should_run:
                     self.experiment.advance_trial()
+
 
                 self.finished.emit()
 
@@ -91,6 +117,7 @@ class QueueController(QtCore.QObject):
         self.get_hardware_params = get_hardware_params
         self.get_export_params = get_export_params
         self.prepare_thread()
+        self.repeats_done = 0
 
         self.should_run = False
         self.trigger_control = trigger_control
@@ -106,6 +133,7 @@ class QueueController(QtCore.QObject):
         self.thread.start()
 
     def start(self):
+
         if not self.should_run:
             self.should_run = True
 
@@ -119,6 +147,8 @@ class QueueController(QtCore.QObject):
             self.should_run = False
 
         self.experiment.reset_trials()
+        self.repeats_done = 0
+
 
     def run_selected(self, trial):
         if not self.should_run:
