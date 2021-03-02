@@ -1,6 +1,13 @@
 import sys
+<<<<<<< Updated upstream
 sys.path.append('C:\\Users\\warnert\\Documents\\GitHub')
 sys.path.append('C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy')
+=======
+sys.path.append('C:\\Users\\ackelst\\Documents\\GitHub')
+sys.path.append('C:\\Users\\ackelst\\Documents\\GitHub\\PulseBoy')
+sys.path.append('C:\\Users\\ackelst\\Documents\\GitHub\\PulseBoy')
+
+>>>>>>> Stashed changes
 from PyPulse import PulseInterface
 import numpy as np
 from PyQt5 import QtWidgets
