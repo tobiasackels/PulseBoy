@@ -247,6 +247,10 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
             self.shatterEdit.setText(str(params['shatter_frequency']))
         if 'shatter_duty' in params:
             self.shatterDutyEdit.setText(str(params['shatter_duty']))
+        if 'isShatter' in params:
+            self.shatterBox.setChecked(bool(params['isShatter']))
+        else:
+            self.shatterBox.setChecked(False)
 
 
 
