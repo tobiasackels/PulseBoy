@@ -1,7 +1,6 @@
 import sys
-sys.path.append('C:\\Users\\warnert\\Documents\\GitHub')
-sys.path.append('C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy_updated\\PulseBoy')
-sys.path.append('C:\\Users\\warnert\\Documents\\GitHub\\PulseBoy')
+sys.path.append('C:\\Users\\ackelst\\Documents\\GitHub')
+sys.path.append('C:\\Users\\ackelst\\Documents\\GitHub\\PulseBoy')
 
 from PyPulse import PulseInterface
 import numpy as np
