@@ -98,7 +98,7 @@ class QueueWorker(QtCore.QObject):
                         self.parent.repeats_done = 0
                     else:
                         if global_params['shuffle_repeats']:
-                            self.experiment.randomise_trials()
+                            self.experiment.randomise_trials(global_params)
 
                 elif self.parent.should_run:
                     self.experiment.advance_trial()
