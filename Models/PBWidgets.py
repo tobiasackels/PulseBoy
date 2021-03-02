@@ -244,7 +244,18 @@ class BinaryPlumeValveWidget(QtWidgets.QWidget, binaryValveDesign.Ui_Form):
         self.binsizeEdit.setText(str(params['bin_size']))
         self.shatterEdit.setText(str(params['shatter_frequency']))
         self.position.setText(str(params['position']))
+<<<<<<< HEAD
         self.shatterDutyEdit.setText(str(params['shatter_duty']))
+=======
+        if 'shatter_frequency' in params:
+            self.shatterEdit.setText(str(params['shatter_frequency']))
+        if 'shatter_duty' in params:
+            self.shatterDutyEdit.setText(str(params['shatter_duty']))
+        if 'isShatter' in params:
+            self.shatterBox.setChecked(bool(params['isShatter']))
+        else:
+            self.shatterBox.setChecked(False)
+>>>>>>> ce750161dd455f751fc15d2e76a06db95e386653
 
 
 
